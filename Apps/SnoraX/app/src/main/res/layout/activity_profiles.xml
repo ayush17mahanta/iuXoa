@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ProfilesActivity">
+
+    <!-- Add Profile Button -->
+    <Button
+        android:id="@+id/btnAddProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Profile"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Profiles List -->
+    <ListView
+        android:id="@+id/listProfiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

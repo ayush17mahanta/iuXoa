@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#6200EE</color> <!-- Purple 500 -->
+
+    <!-- Darker version of the primary color (used for status bar, etc.) -->
+    <color name="colorPrimaryDark">#3700B3</color> <!-- Purple 700 -->
+
+    <!-- Accent color (used for highlights, buttons, etc.) -->
+    <color name="colorAccent">#03DAC5</color> <!-- Teal 200 -->
+
+    <color name="colorAccentDark">#C51162</color>
+
+    <color name="normal_mode">#4CAF50</color>  <!-- Green -->
+    <color name="vibrate_mode">#FFC107</color> <!-- Amber -->
+    <color name="silent_mode">#F44336</color>  <!-- Red -->
+</resources>

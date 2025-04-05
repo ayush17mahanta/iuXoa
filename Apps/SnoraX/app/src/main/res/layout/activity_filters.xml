@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".FiltersActivity">
+
+    <!-- Add Filter Button -->
+    <Button
+        android:id="@+id/btnAddFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Filter"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Filters List -->
+    <ListView
+        android:id="@+id/listFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

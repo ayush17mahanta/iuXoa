@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SnoraX</string>
+    <string name="notification_management">Notification Management</string>
+    <string name="lectures">Lectures: %d</string>
+    <string name="start_time">Start Time: %s</string>
+    <string name="duration">Duration: %d min</string>
+    <string name="mute_all">Mute All</string>
+    <string name="unmute_all">Unmute All</string>
+    <string name="vibrate_all">Vibrate All</string>
+    <string name="select_start_time">Select Start Time</string>
+    <string name="select_duration">Select Duration</string>
+    <string name="day">Day</string>
+    <string name="lecture">Lec %d</string>
+    <string name="lecture_header">Lec %d</string>
+
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="spanish">Spanish</string>
+    <string name="german">German</string>
+</resources>

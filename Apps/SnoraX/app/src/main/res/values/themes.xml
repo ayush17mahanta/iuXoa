@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SnoraX" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Use the same colors for both light and dark themes -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:background">@color/white</item>
+
+        <!-- You can add other color customizations as needed -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <!-- The main theme will inherit from the base theme -->
+    <style name="Theme.SnoraX" parent="Base.Theme.SnoraX" />
+</resources>

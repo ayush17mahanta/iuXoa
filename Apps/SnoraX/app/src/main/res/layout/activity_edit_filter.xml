@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".EditFilterActivity">
+
+    <!-- Filter Value Input -->
+    <EditText
+        android:id="@+id/etFilterValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Filter Value"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Filter Type Radio Group -->
+    <RadioGroup
+        android:id="@+id/rgFilterType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbKeyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keyword" />
+
+        <RadioButton
+            android:id="@+id/rbSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sender" />
+
+        <RadioButton
+            android:id="@+id/rbApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App" />
+    </RadioGroup>
+
+    <!-- Filter Action Radio Group -->
+    <RadioGroup
+        android:id="@+id/rgFilterAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Block" />
+
+        <RadioButton
+            android:id="@+id/rbAllow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Allow" />
+    </RadioGroup>
+
+    <!-- Save Filter Button -->
+    <Button
+        android:id="@+id/btnSaveFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Filter"
+        android:backgroundTint="@color/black"
+        android:textColor="@android:color/white" />
+</LinearLayout>

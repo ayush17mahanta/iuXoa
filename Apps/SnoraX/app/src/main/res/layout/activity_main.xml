@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ecf0f3"
+    tools:context=".MainActivity"
+    android:layout_gravity="center">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!-- App Name -->
+            <TextView
+                android:id="@+id/tvAppName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="30sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp" />
+
+            <TextView
+                android:id="@+id/tvQuote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notification_management"
+                android:textSize="15sp"
+                android:layout_marginStart="30dp" />
+
+            <!-- Notification Button -->
+            <soup.neumorphism.NeumorphFloatingActionButton
+                android:id="@+id/fabBell"
+                style="@style/Widget.Neumorph.FloatingActionButton"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="center"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/bell_selector"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/tvCurrentStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Current Mode: Normal"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:id="@+id/tvNextStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Next Click: Vibrate"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Weekly Schedule -->
+            <soup.neumorphism.NeumorphCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:cardCornerRadius="10dp">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <TableLayout
+                        android:id="@+id/tblWeeklySchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="16dp" />
+                </HorizontalScrollView>
+            </soup.neumorphism.NeumorphCardView>
+
+
+
+            <!-- Lecture Controls -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+                <soup.neumorphism.NeumorphButton
+                    android:id="@+id/btnLectureCount"
+                    style="@style/Widget.Neumorph.Button"
+                    android:layout_width="115dp"
+                    android:layout_height="80dp"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:text="Lecture"
+                    android:fontFamily="@font/gorva"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    app:neumorph_shapeType="flat" />
+
+                <soup.neumorphism.NeumorphButton
+                    android:id="@+id/btnStartTime"
+                    style="@style/Widget.Neumorph.Button"
+                    android:layout_width="115dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:text="Start Time"
+                    android:fontFamily="@font/gorva"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    app:neumorph_shapeType="flat" />
+
+                <soup.neumorphism.NeumorphButton
+                    android:id="@+id/btnDuration"
+                    style="@style/Widget.Neumorph.Button"
+                    android:layout_width="115dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:text="Duration"
+                    android:fontFamily="@font/gorva"
+                    android:textSize="10sp"
+                    android:layout_gravity="center"
+                    app:neumorph_shapeType="flat" />
+            </LinearLayout>
+
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnLanguage"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/android:textColorPrimary"
+                android:text="@string/language"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_gravity="center"
+                app:neumorph_shapeType="flat" />
+
+            <!-- Preferences Button -->
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnPreferences"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/android:textColorPrimary"
+                android:text="Preferences"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_gravity="center"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnAnalytics"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Analytics"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnFeedback"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Feedback"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnSettings"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnProfiles"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profiles"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnFilters"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Filters"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnRestartTutorial"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restart Tutorial"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                app:neumorph_shapeType="flat" />
+
+            <soup.neumorphism.NeumorphButton
+                android:id="@+id/btnEmergencySettings"
+                style="@style/Widget.Neumorph.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Emergency Settings"
+                android:textColor="?attr/android:textColorPrimary"
+                android:fontFamily="@font/gorva"
+                android:textSize="10sp"
+                android:layout_margin="10dp"
+                app:neumorph_shapeType="flat" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
