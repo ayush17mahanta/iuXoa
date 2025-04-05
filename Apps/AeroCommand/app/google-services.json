@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "902278181787",
+    "project_id": "aero-command",
+    "storage_bucket": "aero-command.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902278181787:android:bdea39611c57a90f75a73e",
+        "android_client_info": {
+          "package_name": "com.iuxoa.aerocommand"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr80OG37fwza6kkEvM4rfLJdaUyDVtUmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

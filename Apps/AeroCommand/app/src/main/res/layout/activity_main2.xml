@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ecf0f3"
+    android:padding="10dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/aero_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aero Command"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:textSize="35sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- Lottie Animation (loon1) -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loon1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loon1" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="Status: Disconnected"
+            android:textSize="18sp"
+            android:paddingTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <soup.neumorphism.NeumorphCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Neumorph.CardView"
+            app:neumorph_shapeType="pressed">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="2">
+
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/batteryLevelText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="Battery: 100%"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/gpsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="GPS: Not Available"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/windspeedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="Wind Speed: Not Available"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/pressureText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="Air Pressure: Not Available"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/temperatureText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="Temprature: Not Available"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+                <soup.neumorphism.NeumorphCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/aero_logo"/>
+
+                        <TextView
+                            android:id="@+id/humidityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:text="Humidty: Not Available"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+
+                </soup.neumorphism.NeumorphCardView>
+
+
+            </GridLayout>
+
+
+        </soup.neumorphism.NeumorphCardView>
+
+
+        <soup.neumorphism.NeumorphButton
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/openButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="Open Gripper" />
+
+        <soup.neumorphism.NeumorphButton
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Close Gripper" />
+
+        <soup.neumorphism.NeumorphButton
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/voiceCommandButton"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:text="Voice Command 🎙"/>
+
+    </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView1"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:layout_marginBottom="20dp"
+        app:lottie_rawRes="@raw/cover_loon"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="iuXoa"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
