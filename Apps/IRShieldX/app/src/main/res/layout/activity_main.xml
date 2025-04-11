@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#f2f2f2"
     android:padding="20dp">
 
@@ -11,218 +11,221 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
+        <!-- Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ir_logo"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="IR Shield"
-                android:layout_gravity="center"
-                android:textSize="24sp" />
-
+                android:textSize="24sp"
+                android:layout_marginStart="8dp"/>
         </LinearLayout>
 
-
+        <!-- Status Text -->
         <TextView
             android:id="@+id/statusText"
-            android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status: Not connected"
             android:layout_gravity="center"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginTop="15dp"/>
 
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.CardView"
+        <!-- Connection Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:neumorph_shapeType="pressed">
+            android:layout_marginTop="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-                <soup.neumorphism.NeumorphButton
-                    style="@style/Widget.Neumorph.Button"
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/connectButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connect to ESP32" />
+                    android:text="Connect to ESP32"/>
 
                 <TextView
-                    android:layout_marginStart="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Not Connected"/>
-
-
+                    android:text="Not Connected"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-
-        </soup.neumorphism.NeumorphCardView>
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.CardView"
+        <!-- LED Controls -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2">
 
-            app:neumorph_shapeType="pressed">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/turnOnLed"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="Turn ON LED"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/turnOffLed"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Turn OFF LED"/>
+        </LinearLayout>
+
+        <!-- Password Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <soup.neumorphism.NeumorphCardView
-                    android:layout_marginTop="5dp"
-                    style="@style/Widget.Neumorph.CardView"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
+                <!-- Password Input -->
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:neumorph_shapeType="basin">
+                    android:layout_marginTop="8dp"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-                    <EditText
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/passwordInput"
-                        android:inputType="textPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Admin Password" />
-                </soup.neumorphism.NeumorphCardView>
+                        android:hint="Enter Admin Password"
+                        android:inputType="textPassword"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-
-                <GridLayout
+                <!-- Login and IR Controls -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:rowCount="2"
-                    android:columnCount="2">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
 
-                    <soup.neumorphism.NeumorphButton
-                        style="@style/Widget.Neumorph.Button"
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/sendPassword"
-                        android:layout_width="0dp"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        app:neumorph_backgroundColor="#d0365a"
-                        android:textColor="@color/white"
-                        android:text="Login" />
+                        android:text="Login"
+                        app:backgroundTint="#d0365a"/>
 
                     <TextView
-                        android:layout_marginStart="15dp"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:gravity="center"
-                        android:layout_rowWeight="1"
-                        android:text="Not Connected" />
+                        android:text="Not Connected"
+                        android:layout_marginStart="16dp"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
 
-                    <soup.neumorphism.NeumorphButton
-                        style="@style/Widget.Neumorph.Button"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:weightSum="2">
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/turnOn"
+                        style="@style/Widget.Material3.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        android:text="Turn ON IR" />
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
+                        android:text="Turn ON IR"/>
 
-                    <soup.neumorphism.NeumorphButton
-                        style="@style/Widget.Neumorph.Button"
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/turnOff"
+                        style="@style/Widget.Material3.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        android:text="Turn OFF IR" />
-
-                </GridLayout>
-
-
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="Turn OFF IR"/>
+                </LinearLayout>
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-
-        </soup.neumorphism.NeumorphCardView>
-
-
-        <soup.neumorphism.NeumorphCardView
-            style="@style/Widget.Neumorph.CardView"
+        <!-- Delay Settings -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:neumorph_shapeType="pressed">
+            android:layout_marginTop="16dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp">
 
-
-        </soup.neumorphism.NeumorphCardView>
-
-        <soup.neumorphism.NeumorphCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Neumorph.CardView"
-            app:neumorph_shapeType="pressed">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <soup.neumorphism.NeumorphCardView
-                    style="@style/Widget.Neumorph.CardView"
+                <!-- Delay Input -->
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:neumorph_shapeType="basin">
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-                    <EditText
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/delayInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Set Delay (ms)" />
+                        android:hint="Set Delay (ms)"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                </soup.neumorphism.NeumorphCardView>
-
-
-                <soup.neumorphism.NeumorphButton
-                    app:neumorph_shapeType="flat"
-                    style="@style/Widget.Neumorph.Button"
+                <!-- Set Delay Button -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/setDelay"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:neumorph_backgroundColor="#4CAF50"
-                    android:textColor="@color/white"
-                    android:text="Set Delay" />
-
+                    android:layout_marginTop="8dp"
+                    android:text="Set Delay"
+                    app:backgroundTint="#4CAF50"/>
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        </soup.neumorphism.NeumorphCardView>
-
-
-
-
-        <soup.neumorphism.NeumorphButton
-            style="@style/Widget.Neumorph.Button"
-            app:neumorph_shapeType="flat"
+        <!-- Logout Button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/logout"
-            android:textColor="@color/white"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:neumorph_backgroundColor="#d0365a"
-            android:text="Logout" />
-
-
-
+            android:layout_marginTop="16dp"
+            android:text="Logout"
+            app:backgroundTint="#d0365a"/>
     </LinearLayout>
-
 </ScrollView>
-
