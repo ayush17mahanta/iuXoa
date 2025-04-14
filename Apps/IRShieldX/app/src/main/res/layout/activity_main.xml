@@ -80,7 +80,7 @@
             android:weightSum="2">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/turnOnLed"
+                android:id="@+id/turnOn"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:text="Turn ON LED"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/turnOffLed"
+                android:id="@+id/turnOff"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                     android:weightSum="2">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/turnOn"
+                        android:id="@+id/turnOnLed"
                         style="@style/Widget.Material3.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                         android:text="Turn ON IR"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/turnOff"
+                        android:id="@+id/turnOffLed"
                         style="@style/Widget.Material3.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

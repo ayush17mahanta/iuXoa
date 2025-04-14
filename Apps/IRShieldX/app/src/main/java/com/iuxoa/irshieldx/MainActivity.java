@@ -12,6 +12,7 @@ import android.Manifest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private OutputStream outputStream;
     private InputStream inputStream;
     private boolean isLoggedIn = false;
+    private boolean isConnecting = true;
+
     private Button turnOnLed, turnOffLed;
-
-
     private EditText passwordInput, delayInput;
     private Button connectButton, sendPassword, turnOn, turnOff, setDelay, logout;
     private TextView statusText;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         statusText = findViewById(R.id.statusText);
 
+        setButtonStates(false);
+
         connectButton.setOnClickListener(view -> connectToESP32());
 
         sendPassword.setOnClickListener(view -> {
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             sendCommand("LOGIN " + password);
+            passwordInput.setText(""); // Clear password after sending
         });
 
         turnOn.setOnClickListener(view -> {
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
             sendCommand("SET_DELAY " + delayStr);
         });
+
         turnOnLed.setOnClickListener(view -> {
             if (isLoggedIn) sendCommand("IR_ON");
             else statusText.setText("Login required");
@@ -101,10 +106,13 @@ public class MainActivity extends AppCompatActivity {
             else statusText.setText("Login required");
         });
 
-
         logout.setOnClickListener(view -> {
             sendCommand("LOGOUT");
             isLoggedIn = false;
+            setButtonStates(false);
+            passwordInput.setEnabled(true);
+            sendPassword.setEnabled(true);
+            statusText.setText("Logged Out");
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -117,19 +125,18 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-
-
     }
 
-
     private void connectToESP32() {
+        connectButton.setEnabled(false); // Disable during connection
+        isConnecting = true;
         new Thread(() -> {
             if (bluetoothAdapter == null) {
                 runOnUiThread(() -> statusText.setText("Bluetooth not supported!"));
                 return;
             }
 
-            while (bluetoothSocket == null || !bluetoothSocket.isConnected()) {
+            while (isConnecting && (bluetoothSocket == null || !bluetoothSocket.isConnected())) {
                 Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
                 boolean deviceFound = false;
 
@@ -138,20 +145,23 @@ public class MainActivity extends AppCompatActivity {
                         deviceFound = true;
                         try {
                             bluetoothSocket = device.createRfcommSocketToServiceRecord(SERIAL_UUID);
-                            bluetoothAdapter.cancelDiscovery(); // Recommended before connect()
+                            bluetoothAdapter.cancelDiscovery();
                             bluetoothSocket.connect();
 
                             outputStream = bluetoothSocket.getOutputStream();
                             inputStream = bluetoothSocket.getInputStream();
 
-                            runOnUiThread(() -> statusText.setText("Connected to ESP32!"));
-                            listenForResponses(); // Start listening for responses
-                            return; // Exit the loop after successful connection
+                            runOnUiThread(() -> {
+                                statusText.setText("Connected to ESP32!");
+                                connectButton.setEnabled(false);
+                            });
+                            listenForResponses();
+                            return;
 
                         } catch (IOException e) {
                             runOnUiThread(() -> statusText.setText("Connection failed, retrying..."));
                             try {
-                                Thread.sleep(2000); // Wait 2 seconds before retrying
+                                Thread.sleep(2000);
                             } catch (InterruptedException ie) {
                                 ie.printStackTrace();
                             }
@@ -160,22 +170,21 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (!deviceFound) {
-                    runOnUiThread(() -> statusText.setText("ESP32 not paired or not in range! Retrying..."));
-                    try {
-                        Thread.sleep(3000); // Wait 3 seconds before next retry
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    runOnUiThread(() -> {
+                        statusText.setText("ESP32 not found. Pair it first.");
+                        connectButton.setEnabled(true);
+                    });
+                    break;
                 }
             }
         }).start();
     }
 
-
     private void sendCommand(String command) {
         if (outputStream != null) {
             try {
                 outputStream.write((command + "\n").getBytes());
+                outputStream.flush();
             } catch (IOException e) {
                 runOnUiThread(() -> statusText.setText("Failed to send command!"));
             }
@@ -190,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         setDelay.setEnabled(enabled);
         turnOnLed.setEnabled(enabled);
         turnOffLed.setEnabled(enabled);
+        logout.setEnabled(enabled);
     }
 
     private void listenForResponses() {
@@ -202,24 +212,34 @@ public class MainActivity extends AppCompatActivity {
                     if ((bytes = inputStream.read(buffer)) > 0) {
                         String response = new String(buffer, 0, bytes).trim();
                         runOnUiThread(() -> {
-                            if (response.equalsIgnoreCase("LOGIN_SUCCESS")) {
-                                isLoggedIn = true;
-                                setButtonStates(true);
-                                statusText.setText("Login Successful");
-                            } else if (response.equalsIgnoreCase("LOGIN_FAIL")) {
-                                isLoggedIn = false;
-                                setButtonStates(false);
-                                statusText.setText("Wrong Password");
-                            } else if (response.equalsIgnoreCase("LOGOUT_SUCCESS")) {
-                                isLoggedIn = false;
-                                setButtonStates(false);
-                                statusText.setText("Logged Out");
+                            switch (response.toUpperCase()) {
+                                case "LOGIN_SUCCESS":
+                                    isLoggedIn = true;
+                                    setButtonStates(true);
+                                    passwordInput.setEnabled(false);
+                                    sendPassword.setEnabled(false);
+                                    statusText.setText("Login Successful");
+                                    break;
+                                case "LOGIN_FAIL":
+                                    isLoggedIn = false;
+                                    setButtonStates(false);
+                                    statusText.setText("Wrong Password");
+                                    break;
+                                case "LOGOUT_SUCCESS":
+                                    isLoggedIn = false;
+                                    setButtonStates(false);
+                                    statusText.setText("Logged Out");
+                                    break;
+                                default:
+                                    statusText.setText("Response: " + response);
                             }
-
                         });
                     }
                 } catch (IOException e) {
-                    runOnUiThread(() -> statusText.setText("Disconnected"));
+                    runOnUiThread(() -> {
+                        statusText.setText("Disconnected");
+                        connectButton.setEnabled(true);
+                    });
                     break;
                 }
             }
@@ -229,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isConnecting = false;
         try {
             if (outputStream != null) outputStream.close();
             if (inputStream != null) inputStream.close();

@@ -2,14 +2,16 @@
 BluetoothSerial SerialBT;
 
 #define NUM_LEDS 9
-int ledPins[NUM_LEDS] = {13, 12, 14, 27, 26, 25, 33, 32, 15};  // IR LED pins
-const int ledIndicator = 2;  // External LED pin
-int irDelay = 20;            // Delay between ON/OFF pulses (in microseconds)
+int ledPins[NUM_LEDS] = {25, 26, 32, 33, 23, 22, 21, 18, 19};  // IR LED pins
+const int ledIndicator = 2;  // Power indicator LED
+const int controlLed = 4;    // LED controlled via ON/OFF
+int irDelay = 20;            // Delay in microseconds
+
 bool floodActive = false;
 bool countdownDone = false;
 bool isLoggedIn = false;
-bool previousClientState = false; // NEW
-
+bool previousClientState = false;
+bool controlLedState = false;
 
 const String correctPassword = "admin123";
 String incomingCommand = "";
@@ -19,30 +21,31 @@ void setup() {
   SerialBT.begin("ESP32_IR_Blocker");
   Serial.println("Bluetooth started. Waiting for app to connect...");
 
-  // Initialize all IR LED pins
   for (int i = 0; i < NUM_LEDS; i++) {
     pinMode(ledPins[i], OUTPUT);
     digitalWrite(ledPins[i], LOW);
   }
 
   pinMode(ledIndicator, OUTPUT);
-  digitalWrite(ledIndicator, HIGH);  // External LED always ON (indicates power)
+  digitalWrite(ledIndicator, HIGH);  // Always ON
+
+  pinMode(controlLed, OUTPUT);
+  digitalWrite(controlLed, LOW);     // Start OFF
 
   delay(15000);  // 15-second startup delay
+  floodActive = true;  // Start IR flooding after delay
   countdownDone = true;
-  Serial.println("Startup delay complete. Ready to accept commands.");
+  Serial.println("Startup delay complete. IR flooding started.");
 }
 
 void loop() {
-  // Check if app connected via Bluetooth
- bool currentClientState = SerialBT.hasClient();
-if (currentClientState && !previousClientState) {
-  Serial.println("App connected via Bluetooth.");
-}
-previousClientState = currentClientState;
-ooo
+  bool currentClientState = SerialBT.hasClient();
+  if (currentClientState && !previousClientState) {
+    Serial.println("App connected via Bluetooth.");
+  }
+  previousClientState = currentClientState;
 
-  // Handle incoming Bluetooth data
+  // Handle Bluetooth input
   while (SerialBT.available()) {
     char c = SerialBT.read();
     if (c == '\n') {
@@ -53,15 +56,15 @@ ooo
     }
   }
 
-  // Perform IR flooding only if active, logged in, and after delay
-  if (countdownDone && floodActive && isLoggedIn) {
+  // IR Flooding Loop (active after 15s, regardless of login)
+  if (countdownDone && floodActive) {
     floodIR();
   }
 }
 
 void processCommand(String cmd) {
   cmd.trim();
-  Serial.print("Raw Command Received: '");
+  Serial.print("Command: '");
   Serial.print(cmd);
   Serial.println("'");
 
@@ -71,10 +74,6 @@ void processCommand(String cmd) {
   if (cmdUpper.startsWith("LOGIN ")) {
     String pass = cmd.substring(6);
     pass.trim();
-    Serial.print("Password Received: '");
-    Serial.print(pass);
-    Serial.println("'");
-
     if (pass == correctPassword) {
       isLoggedIn = true;
       SerialBT.println("LOGIN_SUCCESS");
@@ -82,7 +81,7 @@ void processCommand(String cmd) {
     } else {
       isLoggedIn = false;
       SerialBT.println("LOGIN_FAIL");
-      Serial.println("Login failed. Wrong password.");
+      Serial.println("Login failed.");
     }
 
   } else if (cmdUpper == "LOGOUT") {
@@ -90,16 +89,25 @@ void processCommand(String cmd) {
     SerialBT.println("LOGOUT_SUCCESS");
     Serial.println("Logged out.");
 
-  } else if (cmdUpper == "ON" && isLoggedIn) {
-    floodActive = true;
-    SerialBT.println("IR_FLOOD_ON");
-    Serial.println("IR flooding activated.");
+  } else if (cmdUpper == "ON" && isLoggedIn && !floodActive) {
+    digitalWrite(controlLed, HIGH);
+    controlLedState = true;
+    SerialBT.println("LED_ON");
+    Serial.println("Control LED turned ON.");
 
-  } else if (cmdUpper == "OFF" && isLoggedIn) {
-    floodActive = false;
-    turnOffIR();
-    SerialBT.println("IR_FLOOD_OFF");
-    Serial.println("IR flooding stopped.");
+  } else if (cmdUpper == "OFF" && isLoggedIn && !floodActive) {
+    digitalWrite(controlLed, LOW);
+    controlLedState = false;
+    SerialBT.println("LED_OFF");
+    Serial.println("Control LED turned OFF.");
+
+  } else if ((cmdUpper == "ON" || cmdUpper == "OFF") && floodActive) {
+    SerialBT.println("BLOCKED_DUE_TO_IR");
+    Serial.println("LED control blocked: IR flooding is active.");
+
+  } else if ((cmdUpper == "ON" || cmdUpper == "OFF") && !countdownDone) {
+    SerialBT.println("WAIT_STARTUP");
+    Serial.println("Please wait: IR flooding startup delay.");
 
   } else if (cmdUpper.startsWith("SET_DELAY ") && isLoggedIn) {
     String delayVal = cmd.substring(10);
@@ -110,14 +118,15 @@ void processCommand(String cmd) {
     Serial.println(irDelay);
 
   } else if (cmdUpper == "IR_ON" && isLoggedIn) {
-    turnOnIR();
+    floodActive = true;
     SerialBT.println("IR_LED_ON");
-    Serial.println("IR LEDs turned ON.");
+    Serial.println("IR flooding activated.");
 
   } else if (cmdUpper == "IR_OFF" && isLoggedIn) {
+    floodActive = false;
     turnOffIR();
-    SerialBT.println("IR_LED_OFF");
-    Serial.println("IR LEDs turned OFF.");
+    SerialBT.println("IR_FLOOD_OFF");
+    Serial.println("IR flooding deactivated.");
 
   } else {
     SerialBT.println("INVALID_COMMAND");
@@ -126,7 +135,6 @@ void processCommand(String cmd) {
 }
 
 void floodIR() {
-  // Emit pulsed 38kHz IR signal on all LEDs
   for (int i = 0; i < NUM_LEDS; i++) {
     digitalWrite(ledPins[i], HIGH);
   }
@@ -135,12 +143,6 @@ void floodIR() {
     digitalWrite(ledPins[i], LOW);
   }
   delayMicroseconds(irDelay);
-}
-
-void turnOnIR() {
-  for (int i = 0; i < NUM_LEDS; i++) {
-    digitalWrite(ledPins[i], HIGH);
-  }
 }
 
 void turnOffIR() {
