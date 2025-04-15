@@ -21,17 +21,17 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/ir_logo"/>
+                android:src="@drawable/ir_logo2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="IR Shield"
+                android:text="IR ShieldX"
                 android:textSize="34sp"
+                android:textColor="@color/black"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
 
-        <!-- Status Text -->
         <TextView
             android:id="@+id/statusText"
             android:layout_width="wrap_content"
@@ -41,7 +41,6 @@
             android:textSize="16sp"
             android:layout_marginTop="15dp"/>
 
-        <!-- Connection Card -->
         <soup.neumorphism.NeumorphCardView
             style="@style/Widget.Neumorph.CardView"
             android:layout_width="match_parent"
@@ -105,6 +104,7 @@
                             android:id="@+id/passwordInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:layout_toStartOf="@+id/togglePasswordVisibility"
                             android:hint="Enter Admin Password"
                             android:inputType="textPassword"/>
@@ -238,6 +238,7 @@
                         <TextView
                             android:id="@+id/delayLabel"
                             android:layout_width="wrap_content"
+                            android:textColor="@color/black"
                             android:layout_height="wrap_content"
                             android:text="Delay: 0 sec" />
 
