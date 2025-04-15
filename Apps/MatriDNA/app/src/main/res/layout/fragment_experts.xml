@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:background="@color/background"
+    tools:context=".ExpertsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ask Expert"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctor Consultation and Kit Purchase Recommendation"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <!-- Voice Call Option -->
+        <soup.neumorphism.NeumorphCardView
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/voice_call"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="130dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Voice Call"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Faceless Consult"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_voice"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_rawRes="@raw/voice_call"/>
+            </LinearLayout>
+        </soup.neumorphism.NeumorphCardView>
+
+        <!-- Video Call Option -->
+        <soup.neumorphism.NeumorphCardView
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/video_call"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Video Call"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Face to Face Consult"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_video"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_rawRes="@raw/video_call"/>
+            </LinearLayout>
+        </soup.neumorphism.NeumorphCardView>
+
+        <!-- Chat Option -->
+        <soup.neumorphism.NeumorphCardView
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/chat"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chat with Experts"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Text-based Consulting"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_chat"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_rawRes="@raw/chat_icon"/>
+            </LinearLayout>
+        </soup.neumorphism.NeumorphCardView>
+
+    </LinearLayout>
+
+</ScrollView>

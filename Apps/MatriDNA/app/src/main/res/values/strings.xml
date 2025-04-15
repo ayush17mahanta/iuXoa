@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MatriDNA</string>
+    <string name="tagline">Preserving the legacy of life</string>
+    <string name="welcome">Welcome!</string>
+    <string name="lets_get_started">Let\'s get started</string>
+    <string name="enter_mobile_number">Enter your Mobile Number</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">OR</string>
+    <string name="otp">OTP</string>
+    <string-array name="language_options">
+        <item>English</item>
+        <item>हिन्दी</item>
+    </string-array>
+
+</resources>

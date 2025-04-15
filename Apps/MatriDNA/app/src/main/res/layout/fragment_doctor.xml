@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_appointment"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Appointment"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_expert"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Expert"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:padding="10dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/underline_expert"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="4dp"
+            android:background="@color/button_color" />
+
+        <View
+            android:id="@+id/underline_appointment"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="4dp"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

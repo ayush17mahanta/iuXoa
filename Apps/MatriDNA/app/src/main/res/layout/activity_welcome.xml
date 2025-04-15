@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="24dp"
+    android:id="@+id/main"
+    android:background="@color/background"
+    tools:context=".WelcomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/welcomeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Jeevani!"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/welcomeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="We're here to support your health and wellness journey. Let's get started by personalizing your experience."
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/instructionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please select your purpose:"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Updated Preference Selection -->
+        <CheckBox
+            android:id="@+id/generalHealthCheckup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="General health check-up"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/basicHealthScreening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Basic health screening"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/advancedHealthTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Advanced health test"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/fullBodyWellnessCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full-body wellness check"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/energyStrengthLevels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Energy &amp; strength levels"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/womensHealthPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Women’s health panel"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/hormonalChangesImbalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hormonal changes &amp; imbalance"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/pcosPcodScreening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PCOS/PCOD screening"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/pregnancyDetection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pregnancy detection"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/prenatalPostnatalHealth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prenatal &amp; postnatal health"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/ovulationFertilityHealth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ovulation &amp; fertility health"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/ovulationPregnancySupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ovulation &amp; pregnancy support"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/menstrualCycleTracking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menstrual cycle tracking"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/reproductiveHormoneHealth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reproductive hormone health"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/preIVFHealthCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pre-IVF health check"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/diabetesBloodSugarTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diabetes &amp; blood sugar test"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/thyroidHealthMonitoring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thyroid health monitoring"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/anemiaIronLevelsCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anemia &amp; iron levels check"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/immunityVitaminDeficiency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Immunity &amp; vitamin deficiency"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:textSize="16sp"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            android:padding="12dp"/>
+
+
+    </LinearLayout>
+
+
+</ScrollView>

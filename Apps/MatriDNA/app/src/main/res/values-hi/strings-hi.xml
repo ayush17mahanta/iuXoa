@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_hi">जीवनी</string>
+    <string name="tagline_hi">क्योंकि तू सबका ख्याल रखती है\nपर तेरा कौन रखेगा?</string>
+    <string name="welcome_hi">स्वागत है!</string>
+    <string name="lets_get_started_hi">आइए शुरू करें</string>
+    <string name="enter_mobile_number_hi">अपना मोबाइल नंबर दर्ज करें</string>
+    <string name="enter_password_hi">अपना पासवर्ड दर्ज करें</string>
+    <string name="sign_in_hi">साइन इन करें</string>
+    <string name="or_hi">या</string>
+    <string name="otp_hi">ओटीपी</string>
+</resources>
