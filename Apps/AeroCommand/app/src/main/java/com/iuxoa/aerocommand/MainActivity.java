@@ -6,19 +6,25 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,22 +35,31 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
 
+import soup.neumorphism.NeumorphButton;
+
 public class MainActivity extends AppCompatActivity {
 
-    private TextView statusTextView, batteryText, pressureText, tempText, humText, gpsText;
+    // UI Components
+    private TextView statusTextView, batteryText, pressureText, tempText, humText, gpsText, altitudeText;
+    private View loon1;
+    private NeumorphButton openGraphDialogButton;
+    private GraphDialogFragment graphDialog;
+    // Bluetooth Components
     private BluetoothSocket bluetoothSocket;
     private InputStream inputStream;
     private OutputStream outputStream;
     private boolean isConnected = false;
-    private View loon1;
 
+    // Reconnection Handler
     private boolean shouldReconnect = true;
     private final Handler reconnectHandler = new Handler();
     private static final long RECONNECT_INTERVAL = 3000;
 
+    // Constants
     private static final int VOICE_REQUEST_CODE = 100;
     private static final String ESP32_MAC = "3C:8A:1F:50:B3:26";
     private static final UUID UUID = java.util.UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +69,18 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
         checkPermissions();
         connectBluetooth();
+
+        // Set up graph dialog button
+        openGraphDialogButton = findViewById(R.id.openGraphDialogButton);
+        openGraphDialogButton.setOnClickListener(v -> showGraphDialog());
     }
 
-    private void startReconnectLoop() {
-        reconnectHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!isConnected && shouldReconnect) {
-                    connectBluetooth();
-                }
-                reconnectHandler.postDelayed(this, RECONNECT_INTERVAL);
-            }
-        }, RECONNECT_INTERVAL);
+    private void showGraphDialog() {
+        graphDialog = new GraphDialogFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        graphDialog.show(fragmentManager, "GraphDialog");
     }
+
 
 
     private void initializeViews() {
@@ -76,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
         tempText = findViewById(R.id.temperatureText);
         humText = findViewById(R.id.humidityText);
         gpsText = findViewById(R.id.gpsText);
-        loon1 = findViewById(R.id.loon1); // Reference to the view
+        altitudeText = findViewById(R.id.altitudeText);
+        loon1 = findViewById(R.id.loon1);
 
         findViewById(R.id.openButton).setOnClickListener(v -> {
             sendCommand("O");
@@ -91,28 +106,101 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.voiceCommandButton).setOnClickListener(v -> startVoiceRecognition());
     }
 
-    private void fadeOut(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
-            view.animate()
-                    .alpha(0f)
-                    .setDuration(500) // Adjust duration as needed
-                    .withEndAction(() -> view.setVisibility(View.INVISIBLE))
-                    .start();
+    private void checkPermissions() {
+        ArrayList<String> requiredPermissions = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED) {
+            requiredPermissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            requiredPermissions.add(Manifest.permission.RECORD_AUDIO);
+        }
+
+        if (!requiredPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    requiredPermissions.toArray(new String[0]), 1);
         }
     }
 
-    // Fade-in animation (Show View)
-    private void fadeIn(View view) {
-        if (view.getVisibility() == View.INVISIBLE) {
-            view.setVisibility(View.VISIBLE);
-            view.setAlpha(0f); // Start invisible
-            view.animate()
-                    .alpha(1f)
-                    .setDuration(500)
-                    .start();
-        }
+    private void connectBluetooth() {
+        new Thread(() -> {
+            try {
+                BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(ESP32_MAC);
+                bluetoothSocket = device.createRfcommSocketToServiceRecord(UUID);
+                bluetoothSocket.connect();
+                inputStream = bluetoothSocket.getInputStream();
+                outputStream = bluetoothSocket.getOutputStream();
+                isConnected = true;
+
+                runOnUiThread(() -> {
+                    statusTextView.setText("Connected");
+                    startListening();
+                    startReconnectLoop();
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> statusTextView.setText("Connection Failed"));
+            }
+        }).start();
     }
 
+    private void startReconnectLoop() {
+        reconnectHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isConnected && shouldReconnect) {
+                    connectBluetooth();
+                }
+                reconnectHandler.postDelayed(this, RECONNECT_INTERVAL);
+            }
+        }, RECONNECT_INTERVAL);
+    }
+
+    private void startListening() {
+        new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    parseData(line);
+                }
+            } catch (Exception e) {
+                runOnUiThread(this::disconnect);
+            }
+        }).start();
+    }
+
+    private void parseData(String data) {
+        runOnUiThread(() -> {
+            if (data.startsWith("BATTERY:")) {
+                batteryText.setText("\uD83D\uDD0BBattery: " + data.replace("BATTERY:", "") + "V");
+            } else if (data.startsWith("TEMP:")) {
+                tempText.setText("\uD83C\uDF21Temperature: " + data.replace("TEMP:", "") + "°C");
+            } else if (data.startsWith("HUMIDITY:")) {
+                humText.setText("\uD83D\uDCA7Humidity: " + data.replace("HUMIDITY:", "") + "%");
+            } else if (data.startsWith("PRESSURE:")) {
+                pressureText.setText("\uD83E\uDDEDPressure: " + data.replace("PRESSURE:", "") + "hPa");
+            } else if (data.startsWith("GPS:")) {
+                gpsText.setText("\uD83D\uDCCDGPS: " + data.replace("GPS:", ""));
+            } else if (data.startsWith("ALTITUDE:")) {
+                altitudeText.setText("\uD83E\uDDEDAltitude: " + data.replace("ALTITUDE:", "") + "m");
+            }
+
+
+        });
+    }
+
+
+    private void sendCommand(String cmd) {
+        if (isConnected) {
+            try {
+                outputStream.write((cmd + "\n").getBytes());
+            } catch (IOException e) {
+                disconnect();
+            }
+        }
+    }
 
     private void startVoiceRecognition() {
         if (!isConnected) {
@@ -139,119 +227,44 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == VOICE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (results != null && !results.isEmpty()) {
-                processVoiceCommand(results.get(0).toLowerCase());
-            }
-        }
-    }
-
-    private void processVoiceCommand(String command) {
-        if (command.contains("open")) {
-            sendCommand("O");
-            fadeOut(loon1);  // Add this line
-            Toast.makeText(this, "Opening Gripper", Toast.LENGTH_SHORT).show();
-        } else if (command.contains("close")) {
-            sendCommand("C");
-            fadeIn(loon1);  // Add this line
-            Toast.makeText(this, "Closing Gripper", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Unrecognized Command", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void connectBluetooth() {
-        new Thread(() -> {
-            try {
-                BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(ESP32_MAC);
-                bluetoothSocket = device.createRfcommSocketToServiceRecord(UUID);
-                bluetoothSocket.connect();
-                inputStream = bluetoothSocket.getInputStream();
-                outputStream = bluetoothSocket.getOutputStream();
-                isConnected = true;
-
-                runOnUiThread(() -> {
-                    statusTextView.setText("Connected");
-                    startListening();
-                    startReconnectLoop();
-                });
-            } catch (Exception e) {  // Changed from IOException to Exception
-                runOnUiThread(() -> statusTextView.setText("Connection Failed"));
-            }
-        }).start();
-    }
-
-    private void startListening() {
-        new Thread(() -> {
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    parseData(line);
+                String command = results.get(0).toLowerCase();
+                if (command.contains("open")) {
+                    sendCommand("O");
+                    fadeOut(loon1);
+                    Toast.makeText(this, "Opening Gripper", Toast.LENGTH_SHORT).show();
+                } else if (command.contains("close")) {
+                    sendCommand("C");
+                    fadeIn(loon1);
+                    Toast.makeText(this, "Closing Gripper", Toast.LENGTH_SHORT).show();
                 }
-            } catch (Exception e) {  // Changed from IOException to Exception
-                runOnUiThread(() -> disconnect());
-            }
-        }).start();
-    }
-
-    private void parseData(String data) {
-        runOnUiThread(() -> {
-            if (data.startsWith("BATTERY:")) {
-                batteryText.setText("Battery: " + data.replace("BATTERY:", "") + "V");
-            } else if (data.startsWith("TEMP:")) {
-                tempText.setText("Temperature: " + data.replace("TEMP:", "") + "°C");
-            } else if (data.startsWith("HUMIDITY:")) {
-                humText.setText("Humidity: " + data.replace("HUMIDITY:", "") + "%");
-            } else if (data.startsWith("PRESSURE:")) {
-                pressureText.setText("Pressure: " + data.replace("PRESSURE:", "") + "hPa");
-            } else if (data.startsWith("GPS:")) {
-                gpsText.setText("GPS: " + data.replace("GPS:", ""));
-            }
-        });
-    }
-
-    private void sendCommand(String cmd) {
-        if (isConnected) {
-            try {
-                outputStream.write((cmd + "\n").getBytes());
-            } catch (IOException e) {
-                disconnect();
             }
         }
+    }
+
+    private void fadeOut(View view) {
+        view.animate().alpha(0f).setDuration(500).start();
+    }
+
+    private void fadeIn(View view) {
+        view.animate().alpha(1f).setDuration(500).start();
     }
 
     private void disconnect() {
         try {
+            shouldReconnect = false;
             if (bluetoothSocket != null) {
                 bluetoothSocket.close();
             }
             isConnected = false;
             runOnUiThread(() -> statusTextView.setText("Disconnected"));
-        } catch (IOException ignored) {}
-    }
-
-    private void checkPermissions() {
-        ArrayList<String> requiredPermissions = new ArrayList<>();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
-                != PackageManager.PERMISSION_GRANTED) {
-            requiredPermissions.add(Manifest.permission.BLUETOOTH_CONNECT);
-        }
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            requiredPermissions.add(Manifest.permission.RECORD_AUDIO);
-        }
-
-        if (!requiredPermissions.isEmpty()) {
-            ActivityCompat.requestPermissions(this,
-                    requiredPermissions.toArray(new String[0]), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        shouldReconnect = false;
         disconnect();
         reconnectHandler.removeCallbacksAndMessages(null);
     }

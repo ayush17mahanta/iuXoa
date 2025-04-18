@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -24,6 +23,9 @@ public class SplashActivity extends AppCompatActivity {
             // Redirect to MainActivity after displaying the splash screen
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
+
+            // Apply fade-out transition
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, 3000); // 3-second delay
     }

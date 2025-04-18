@@ -41,6 +41,7 @@ dependencies {
     implementation libs.okhttp
     implementation 'com.github.fornewid:neumorphism:0.3.0'
     implementation libs.lottie
+    implementation libs.mpandroidchart
 
 
 }

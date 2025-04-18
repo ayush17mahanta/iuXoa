@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
 
-        <!-- Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status: Not connected"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:textSize="16sp"
             android:layout_marginTop="15dp"/>
@@ -69,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Disconnected"
+                    android:textColor="@color/black"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"/>
             </LinearLayout>
@@ -106,6 +107,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
+                            android:textColorHint="@color/black"
                             android:layout_toStartOf="@+id/togglePasswordVisibility"
                             android:hint="Enter Admin Password"
                             android:inputType="textPassword"/>
@@ -123,7 +125,6 @@
                 </soup.neumorphism.NeumorphCardView>
 
 
-                <!-- Login and IR Controls -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,6 +147,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Not Logged In"
+                        android:textColor="@color/black"
+
                         android:layout_marginStart="50dp"
                         android:gravity="center_vertical"/>
                 </LinearLayout>
@@ -172,7 +175,6 @@
             </LinearLayout>
         </soup.neumorphism.NeumorphCardView>
 
-        <!-- LED Controls -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -204,10 +206,6 @@
 
         </LinearLayout>
 
-        <!-- Password Section -->
-
-
-        <!-- Delay Settings -->
         <soup.neumorphism.NeumorphCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -221,7 +219,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Delay Input -->
                 <soup.neumorphism.NeumorphCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -251,8 +248,7 @@
                     </LinearLayout>
 
                 </soup.neumorphism.NeumorphCardView>
-
-                <!-- Set Delay Button -->
+                
                 <soup.neumorphism.NeumorphButton
                     android:id="@+id/setDelay"
                     style="@style/Widget.Neumorph.Button"

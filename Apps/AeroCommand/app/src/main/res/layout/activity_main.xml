@@ -54,73 +54,102 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:layout_gravity="center"
-            android:text="Status: Disconnected"
+            android:text="🔗Status: Disconnected"
             android:textSize="18sp"
             android:paddingTop="10dp"
             android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:id="@+id/batteryLevelText"
-            android:layout_width="wrap_content"
+        <soup.neumorphism.NeumorphCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:text="Battery: 100%"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
+            style="@style/Widget.Neumorph.CardView"
+            app:neumorph_shapeType="pressed">
 
-        <TextView
-            android:id="@+id/gpsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="GPS: Not Available"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_margin="16dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/temperatureText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="Temprature: Not Available"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/batteryLevelText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:text="🔋Battery: 100%"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/humidityText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="Humidty: Not Available"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/windspeedText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="Wind Speed: Not Available"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/pressureText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="Air Pressure: Not Available"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/gpsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="📍GPS: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/temperatureText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="🌡️Temprature: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/humidityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="💧Humidty: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/windSpeedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="🍃Wind Speed: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/pressureText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="🧭Air Pressure: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/altitudeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="⛰️Altitude: Not Available"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+
+        </soup.neumorphism.NeumorphCardView>
+
+
 
         <soup.neumorphism.NeumorphButton
             style="@style/Widget.Neumorph.Button"
@@ -150,7 +179,19 @@
             android:textColor="@color/black"
             android:text="Voice Command 🎙"/>
 
+        <soup.neumorphism.NeumorphButton
+            style="@style/Widget.Neumorph.Button"
+            android:id="@+id/openGraphDialogButton"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Open Graphs 📊"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black" />
+
     </LinearLayout>
+
+
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView1"

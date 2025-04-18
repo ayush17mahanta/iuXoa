@@ -36,10 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private InputStream inputStream;
     private boolean isLoggedIn = false;
     private boolean isConnecting = true;
-
     private int currentDelay = 15; // Default 15 seconds
     private static final String DELAY_PREF_KEY = "ir_delay_pref";
-    // UI Components
     private TextView connectionStatus, logStatus;
     private NeumorphImageButton toggleIR, toggleLED;
     private SeekBar delaySeekBar;
@@ -49,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private Button connectButton, loginLogoutButton;
     private TextView statusText;
     private ImageView togglePasswordVisibility;
-
-    // Constants
     private final String ESP32_DEVICE_NAME = "ESP32_IR_Blocker";
     private final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -58,20 +54,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize Bluetooth Adapter
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        // Initialize all UI components
         initializeViews();
-
-        // Set initial button states
         setButtonStates(false);
-
-        // Set up listeners
         setupListeners();
-
-        // Check and request permissions
         checkPermissions();
     }
 
@@ -88,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         statusText = findViewById(R.id.statusText);
         togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
 
-        // Set initial password visibility state
+
         togglePasswordVisibility.setImageResource(R.drawable.ic_visibility_off);
         passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
         toggleIR.setColorFilter(getResources().getColor(R.color.black));
@@ -96,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Bluetooth connection button
+
         connectButton.setOnClickListener(view -> connectToESP32());
 
         // Delay seekbar
@@ -124,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         currentDelay = prefs.getInt(DELAY_PREF_KEY, 15);
         delaySeekBar.setProgress(currentDelay);
         delayLabel.setText("Delay: " + currentDelay + " sec");
-        // IR toggle button
+
         toggleIR.setOnClickListener(view -> {
             if (!isLoggedIn) {
                 statusText.setText("Login required");
@@ -133,12 +119,12 @@ public class MainActivity extends AppCompatActivity {
             isIROn = !isIROn;
             sendCommand(isIROn ? "IR_ON" : "IR_OFF");
 
-            // Change image color
+
             int color = getResources().getColor(isIROn ? R.color.red : R.color.black);
             toggleIR.setColorFilter(color);
         });
 
-        // LED toggle button
+
         toggleLED.setOnClickListener(view -> {
             if (!isLoggedIn) {
                 statusText.setText("Login required");
@@ -149,25 +135,25 @@ public class MainActivity extends AppCompatActivity {
             toggleLED.setImageResource(isLEDOn ? R.drawable.led_on : R.drawable.led_off);
         });
 
-        // Password visibility toggle
+
         togglePasswordVisibility.setOnClickListener(view -> {
             if (passwordInput.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
-                // Show password
+
                 passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 togglePasswordVisibility.setImageResource(R.drawable.ic_visibility);
             } else {
-                // Hide password
+
                 passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 togglePasswordVisibility.setImageResource(R.drawable.ic_visibility_off);
             }
-            // Move cursor to end
+
             passwordInput.setSelection(passwordInput.getText().length());
         });
 
-        // Login/Logout button
+
         loginLogoutButton.setOnClickListener(view -> {
             if (isLoggedIn) {
-                // Logout action
+
                 sendCommand("LOGOUT");
                 isLoggedIn = false;
                 setButtonStates(false);
@@ -177,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 logStatus.setText("Logged Out");
                 logStatus.setTextColor(getResources().getColor(R.color.red, null));
             } else {
-                // Login action
+
                 String password = passwordInput.getText().toString().trim();
                 if (password.isEmpty()) {
                     statusText.setText("Enter password!");
@@ -333,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             if (response == null || statusText == null) return;
 
-                            // Always show the raw response first
+
                             statusText.setText("Response: " + response);
 
                             // Then handle specific responses
@@ -389,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                                         delaySeekBar.setProgress(currentDelay);
                                         break;
 
-                                    // Add more cases as needed for other responses
+
                                 }
                         });
                     }
@@ -409,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDelaySeekBar() {
-        // Initialize with saved preference or default (15 seconds)
+
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         currentDelay = prefs.getInt("ir_delay", 15);
         delaySeekBar.setProgress(currentDelay);
@@ -424,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed but required to implement
+
             }
 
             @Override
@@ -433,17 +419,17 @@ public class MainActivity extends AppCompatActivity {
                     if (currentDelay >= 1 && currentDelay <= 60) { // Validate range
                         sendCommand("SET_DELAY " + currentDelay);
 
-                        // Save to SharedPreferences
+
                         getSharedPreferences("AppPrefs", MODE_PRIVATE).edit()
                                 .putInt("ir_delay", currentDelay)
                                 .apply();
 
-                        // Visual feedback
+
                         Toast.makeText(MainActivity.this,
                                 "Delay set to " + currentDelay + " seconds",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        // Reset to last valid value if out of range
+
                         delaySeekBar.setProgress(15);
                         delayLabel.setText("Delay: 15 sec");
                         Toast.makeText(MainActivity.this,
@@ -452,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     statusText.setText("Login required to change delay");
-                    // Revert to last saved value
+
                     delaySeekBar.setProgress(
                             getSharedPreferences("AppPrefs", MODE_PRIVATE)
                                     .getInt("ir_delay", 15)
