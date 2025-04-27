@@ -1,19 +1,14 @@
 package com.iuxoa.marki;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import com.iuxoa.marki.model.AppDatabase;
 import com.iuxoa.marki.model.Project;
 
 import java.util.List;
@@ -31,7 +26,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @NonNull
     @Override
     public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_project, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.item_project, parent, false);
         return new ProjectViewHolder(view);
     }
 
@@ -40,20 +36,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         Project project = projectList.get(position);
         holder.title.setText(project.getTitle());
         holder.description.setText(project.getDescription());
-
-        // Handle item click (edit or delete)
-        holder.itemView.setOnClickListener(v -> {
-            // Handle item click (e.g., open project details or edit)
-            Intent intent = new Intent(context, EditProjectActivity.class);
-            intent.putExtra("project_id", project.getId()); // Pass project id to edit
-            context.startActivity(intent);
-        });
-
-        holder.itemView.setOnLongClickListener(v -> {
-            // Handle long click (e.g., delete project)
-            deleteProject(position);
-            return true;
-        });
+        holder.budget.setText(String.format("Budget: $%.2f", project.getBudget()));
+        holder.deadline.setText("Deadline: " + project.getDeadline());
+        holder.skills.setText("Skills: " + project.getSkills());
     }
 
     @Override
@@ -61,22 +46,21 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         return projectList.size();
     }
 
-    private void deleteProject(int position) {
-        Project projectToDelete = projectList.get(position);
-        AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "my-database-name").allowMainThreadQueries().build();
-        db.projectDao().delete(projectToDelete);
-
-        projectList.remove(position);
-        notifyItemRemoved(position);
+    public void updateProjects(List<Project> newProjects) {
+        projectList = newProjects;
+        notifyDataSetChanged();
     }
 
-    public static class ProjectViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description;
+    static class ProjectViewHolder extends RecyclerView.ViewHolder {
+        TextView title, description, budget, deadline, skills;
 
         public ProjectViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.projectTitle);
-            description = itemView.findViewById(R.id.projectDescription);
+            title = itemView.findViewById(R.id.projectTitleText);
+            description = itemView.findViewById(R.id.projectDescriptionText);
+            budget = itemView.findViewById(R.id.projectBudgetText);
+            deadline = itemView.findViewById(R.id.projectDeadlineText);
+            skills = itemView.findViewById(R.id.projectSkillsText);
         }
     }
 }

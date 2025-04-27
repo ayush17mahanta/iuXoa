@@ -1,32 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:id="@+id/main"
+    android:background="@color/background"
+    android:padding="24dp">
 
-
-    <!-- Project Title input -->
-    <EditText
-        android:id="@+id/editTextProjectTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter project title"
-        android:inputType="text"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <!-- Project Description input -->
-    <EditText
-        android:id="@+id/editTextProjectDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter project description"
-        android:inputType="text"/>
+        <EditText
+            android:id="@+id/projectTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project Title"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Button to save project -->
-    <Button
-        android:id="@+id/buttonSaveProject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Project"/>
+        <EditText
+            android:id="@+id/projectDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project Description"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:layout_marginBottom="12dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/projectBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Budget (in ₹)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/projectDeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Deadline (YYYY-MM-DD)"
+            android:inputType="date"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/projectSkills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Required Skills"
+            android:inputType="text"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/submitProjectButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit Project" />
+
+    </LinearLayout>
+
+</ScrollView>

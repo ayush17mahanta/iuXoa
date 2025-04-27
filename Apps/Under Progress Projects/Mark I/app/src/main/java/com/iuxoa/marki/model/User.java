@@ -1,44 +1,43 @@
 package com.iuxoa.marki.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "users")
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String name;
-    private String email;
+    private String id;
+    private String userName;
+    private String userEmail;
 
-    // Constructor
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
+    // Default constructor for Firebase
+    public User() {}
+
+    // Constructor to initialize User object
+    public User(String id, String userName, String userEmail) {
+        this.id = id;
+        this.userName = userName;
+        this.userEmail = userEmail;
     }
 
-    // Getters and Setters
-    public int getId() {
+    // Getters and setters
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

@@ -1,43 +1,76 @@
 package com.iuxoa.marki;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iuxoa.marki.model.Project;
-import com.iuxoa.marki.model.ProjectDatabase;
 
 public class AddProjectActivity extends AppCompatActivity {
 
-    private ProjectDatabase db;
-    private Button saveButton;
+    private EditText editTextTitle, editTextDescription, editTextBudget, editTextDeadline, editTextSkills;
+    private Button buttonSubmit;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_project);
 
-        // Initialize the Save button
-        saveButton = findViewById(R.id.saveButton);
+        // Initialize views
+        editTextTitle = findViewById(R.id.projectTitle);
+        editTextDescription = findViewById(R.id.projectDescription);
+        editTextBudget = findViewById(R.id.projectBudget);
+        editTextDeadline = findViewById(R.id.projectDeadline);
+        editTextSkills = findViewById(R.id.projectSkills);
+        buttonSubmit = findViewById(R.id.submitProjectButton);
 
-        // Assuming you have a method to get the database instance
-        db = ProjectDatabase.getInstance(this);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Projects");
 
-        saveButton.setOnClickListener(v -> {
-            // Hardcoded project details
-            String title = "Project Title";
-            String desc = "Project Description";
-            String budget = "10000";  // Example value
-            String deadline = "2025-12-31";  // Example value
-            String skills = "Java, Android, SQL";  // Example skills
+        buttonSubmit.setOnClickListener(v -> addProject());
+    }
 
-            // Create a new Project object with hardcoded values
-            Project newProject = new Project(title, desc, budget, deadline, skills);
+    private void addProject() {
+        String title = editTextTitle.getText().toString().trim();
+        String desc = editTextDescription.getText().toString().trim();
+        String budgetStr = editTextBudget.getText().toString().trim();
+        String deadline = editTextDeadline.getText().toString().trim();
+        String skills = editTextSkills.getText().toString().trim();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            // Insert the new project into the database
-            db.projectDao().insert(newProject);
+        // Validation
+        if (title.isEmpty() || desc.isEmpty() || budgetStr.isEmpty() ||
+                deadline.isEmpty() || skills.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            // Optionally, finish the activity or show a message
-            finish();
-        });
+        double budget;
+        try {
+            budget = Double.parseDouble(budgetStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid budget amount", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String projectId = databaseReference.push().getKey();
+        Project newProject = new Project(title, desc, budget, deadline, skills, userId);
+        newProject.setId(projectId);
+
+        databaseReference.child(projectId).setValue(newProject)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Project added successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to add project: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

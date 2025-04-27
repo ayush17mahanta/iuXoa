@@ -3,57 +3,84 @@ package com.iuxoa.marki;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private EditText emailField, passwordField;
+    private Button loginButton;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        findViewById(R.id.loginButton).setOnClickListener(v -> loginUser());
-        findViewById(R.id.goToSignup).setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class));
-            finish();
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        emailField = findViewById(R.id.emailField);
+        passwordField = findViewById(R.id.passwordField);
+        loginButton = findViewById(R.id.loginButton);
+
+        // Set OnClickListener for Login Button
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailField.getText().toString().trim();
+                String password = passwordField.getText().toString().trim();
+
+                // Validate input fields
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                } else {
+                    loginUser(email, password);
+                }
+            }
         });
     }
 
-    private void loginUser() {
-        // Here you can add Firebase Auth or custom email-password auth
+    // Method to log in the user
+    private void loginUser(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Log in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
-        // After successful login
-        SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
-        editor.putBoolean("isLoggedIn", true);
-        editor.apply();
+                        // Retrieve the account type from SharedPreferences
+                        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        String accountType = prefs.getString("accountType", "client");
 
-        String role = getSharedPreferences("UserPrefs", MODE_PRIVATE).getString("accountType", "");
-
-        if ("client".equals(role)) {
-            startActivity(new Intent(this, ClientHomeActivity.class));
-        } else {
-            startActivity(new Intent(this, FreelancerHomeActivity.class));
-        }
-        finish();
-
+                        // Redirect to the appropriate Home Activity based on the account type
+                        Intent intent;
+                        if (accountType.equals("client")) {
+                            intent = new Intent(LoginActivity.this, ClientHomeActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, FreelancerHomeActivity.class);
+                        }
+                        startActivity(intent);
+                        finish(); // Close LoginActivity
+                    } else {
+                        // If login fails, display a message to the user
+                        Toast.makeText(LoginActivity.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, ChooseAccountTypeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+    // Redirect to SignUpActivity from LoginActivity
+    public void redirectToSignUp(View view) {
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
-        finish();
+        finish(); // Close LoginActivity
     }
 }

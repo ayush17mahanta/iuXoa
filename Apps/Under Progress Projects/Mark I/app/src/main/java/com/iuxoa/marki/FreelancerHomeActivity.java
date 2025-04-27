@@ -1,61 +1,78 @@
 package com.iuxoa.marki;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import com.iuxoa.marki.model.AppDatabase;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.iuxoa.marki.model.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FreelancerHomeActivity extends AppCompatActivity {
 
+    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private ProjectAdapter adapter;
     private TextView noProjectsText;
-    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_freelancer_home);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Initialize database
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "my-database-name").allowMainThreadQueries().build();
 
         recyclerView = findViewById(R.id.recyclerViewProjects);
         noProjectsText = findViewById(R.id.noProjectsText);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Project> projects = db.projectDao().getAllProjects();
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
-        if (projects.isEmpty()) {
-            noProjectsText.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            noProjectsText.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            adapter = new ProjectAdapter(projects, this); // Passing Context ('this')
-            recyclerView.setAdapter(adapter);
-        }
+        // Load projects from Firestore
+        loadProjectsFromFirestore();
+    }
+
+    private void loadProjectsFromFirestore() {
+        db.collection("Projects")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Project> projectList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Project project = document.toObject(Project.class);
+                            projectList.add(project);
+                        }
+
+                        // Update UI
+                        if (projectList.isEmpty()) {
+                            noProjectsText.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            noProjectsText.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            adapter = new ProjectAdapter(projectList, FreelancerHomeActivity.this);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+    // Example sign-out method in your home activities
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, ChooseAccountTypeActivity.class));
+        finish();
     }
 }

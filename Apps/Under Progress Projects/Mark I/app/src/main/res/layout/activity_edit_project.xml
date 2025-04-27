@@ -1,31 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:background="@color/background"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp">
 
-    <!-- Project Title input -->
-    <EditText
-        android:id="@+id/editTextProjectTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter project title"
-        android:inputType="text"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <!-- Project Description input -->
-    <EditText
-        android:id="@+id/editTextProjectDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter project description"
-        android:inputType="text"/>
+        <!-- Project Title -->
+        <EditText
+            android:id="@+id/editTextProjectTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project Title"
+            android:inputType="textCapWords"
+            android:layout_marginBottom="12dp"/>
 
-    <!-- Button to save changes -->
-    <Button
-        android:id="@+id/buttonSaveChanges"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Changes"/>
+        <!-- Project Description -->
+        <EditText
+            android:id="@+id/editTextProjectDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project Description"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:layout_marginBottom="12dp"/>
 
-</LinearLayout>
+        <!-- Project Budget -->
+        <EditText
+            android:id="@+id/editTextBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Budget (e.g., 500.00)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Project Deadline -->
+        <EditText
+            android:id="@+id/editTextDeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Deadline (e.g., 2023-12-31)"
+            android:inputType="date"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Required Skills -->
+        <EditText
+            android:id="@+id/editTextSkills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Required Skills (comma separated)"
+            android:inputType="textCapWords"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/buttonSaveChanges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:backgroundTint="@color/black"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</ScrollView>

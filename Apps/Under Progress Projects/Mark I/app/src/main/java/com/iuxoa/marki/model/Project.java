@@ -1,76 +1,41 @@
 package com.iuxoa.marki.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "projects")
 public class Project {
-
-    @PrimaryKey(autoGenerate = true) // Auto-generating the ID
-    private int id;
-
+    private String id;
     private String title;
     private String description;
-    private String budget;
+    private double budget;
     private String deadline;
     private String skills;
+    private String userId;
 
-    // Default constructor
-    public Project(String title, String description, String budget, String deadline, String skills) {
+    // Empty constructor required for Firebase
+    public Project() {}
+
+    // Constructor without ID (for new projects)
+    public Project(String title, String description, double budget,
+                   String deadline, String skills, String userId) {
         this.title = title;
         this.description = description;
         this.budget = budget;
         this.deadline = deadline;
         this.skills = skills;
+        this.userId = userId;
     }
 
-    // Getter and Setter methods for the id field
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    // Getter and Setter methods for other fields
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBudget() {
-        return budget;
-    }
-
-    public void setBudget(String budget) {
-        this.budget = budget;
-    }
-
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
-
-    public String getSkills() {
-        return skills;
-    }
-
-    public void setSkills(String skills) {
-        this.skills = skills;
-    }
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public double getBudget() { return budget; }
+    public void setBudget(double budget) { this.budget = budget; }
+    public String getDeadline() { return deadline; }
+    public void setDeadline(String deadline) { this.deadline = deadline; }
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 }

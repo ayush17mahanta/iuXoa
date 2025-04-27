@@ -2,89 +2,104 @@ package com.iuxoa.marki;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
-import com.iuxoa.marki.model.AppDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iuxoa.marki.model.Project;
 
 public class EditProjectActivity extends AppCompatActivity {
 
-    private EditText editTextProjectTitle, editTextProjectDescription;
+    private EditText editTextProjectTitle, editTextProjectDescription,
+            editTextBudget, editTextDeadline, editTextSkills;
     private Button buttonSaveChanges;
-    private int projectId;
+    private String projectId;
+    private DatabaseReference projectDatabaseRef;
+    private Project currentProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_project);
 
-        // Initialize UI elements
+        // Initialize views
         editTextProjectTitle = findViewById(R.id.editTextProjectTitle);
         editTextProjectDescription = findViewById(R.id.editTextProjectDescription);
+        editTextBudget = findViewById(R.id.editTextBudget);
+        editTextDeadline = findViewById(R.id.editTextDeadline);
+        editTextSkills = findViewById(R.id.editTextSkills);
         buttonSaveChanges = findViewById(R.id.buttonSaveChanges);
 
-        // Retrieve project ID from Intent
-        Intent intent = getIntent();
-        projectId = intent.getIntExtra("PROJECT_ID", -1);
+        projectDatabaseRef = FirebaseDatabase.getInstance().getReference("Projects");
+        projectId = getIntent().getStringExtra("PROJECT_ID");
 
-        // If the project ID is valid, load the project details
-        if (projectId != -1) {
+        if (projectId != null) {
             loadProjectDetails(projectId);
         } else {
             Toast.makeText(this, "Invalid project", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
-        // Set button click listener to save changes
-        buttonSaveChanges.setOnClickListener(v -> {
-            // Get input values
-            String title = editTextProjectTitle.getText().toString().trim();
-            String description = editTextProjectDescription.getText().toString().trim();
+        buttonSaveChanges.setOnClickListener(v -> saveChanges());
+    }
 
-            // Validate inputs
-            if (title.isEmpty() || description.isEmpty()) {
-                Toast.makeText(EditProjectActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+    private void loadProjectDetails(String projectId) {
+        projectDatabaseRef.child(projectId).get().addOnSuccessListener(dataSnapshot -> {
+            if (dataSnapshot.exists()) {
+                currentProject = dataSnapshot.getValue(Project.class);
+                if (currentProject != null) {
+                    editTextProjectTitle.setText(currentProject.getTitle());
+                    editTextProjectDescription.setText(currentProject.getDescription());
+                    editTextBudget.setText(String.valueOf(currentProject.getBudget()));
+                    editTextDeadline.setText(currentProject.getDeadline());
+                    editTextSkills.setText(currentProject.getSkills());
+                }
             } else {
-                // Save the edited project
-                AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "my-database-name").allowMainThreadQueries().build();
-
-                Project editedProject = db.projectDao().getProjectById(projectId);
-                editedProject.setTitle(title);
-                editedProject.setDescription(description);
-
-                // Update project in the database
-                db.projectDao().updateProject(editedProject);
-
-                // Show success message
-                Toast.makeText(EditProjectActivity.this, "Project updated successfully!", Toast.LENGTH_SHORT).show();
-
-                // Go back to ProjectManagementActivity
-                Intent intentBack = new Intent(EditProjectActivity.this, ProjectManagementActivity.class);
-                startActivity(intentBack);
-                finish();
+                Toast.makeText(this, "Project not found", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadProjectDetails(int projectId) {
-        // Load project details from the database
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "my-database-name").allowMainThreadQueries().build();
+    private void saveChanges() {
+        String title = editTextProjectTitle.getText().toString().trim();
+        String description = editTextProjectDescription.getText().toString().trim();
+        String budgetStr = editTextBudget.getText().toString().trim();
+        String deadline = editTextDeadline.getText().toString().trim();
+        String skills = editTextSkills.getText().toString().trim();
 
-        Project project = db.projectDao().getProjectById(projectId);
-
-        // Set the project details in the EditText fields
-        if (project != null) {
-            editTextProjectTitle.setText(project.getTitle());
-            editTextProjectDescription.setText(project.getDescription());
-        } else {
-            Toast.makeText(this, "Project not found", Toast.LENGTH_SHORT).show();
+        if (title.isEmpty() || description.isEmpty() || budgetStr.isEmpty() ||
+                deadline.isEmpty() || skills.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        double budget;
+        try {
+            budget = Double.parseDouble(budgetStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid budget amount", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Update the existing project
+        currentProject.setTitle(title);
+        currentProject.setDescription(description);
+        currentProject.setBudget(budget);
+        currentProject.setDeadline(deadline);
+        currentProject.setSkills(skills);
+
+        projectDatabaseRef.child(projectId).setValue(currentProject)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Project updated successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error updating project: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

@@ -66,6 +66,11 @@
             android:text="I want to Post a Project (Client)"
             android:textColor="@color/black"
             app:neumorph_shapeType="flat"/>
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
 
 
     </LinearLayout>

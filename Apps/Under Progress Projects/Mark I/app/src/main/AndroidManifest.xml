@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -31,7 +33,7 @@
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".PostProjectActivity"
+            android:name=".viewmodel.PostProjectActivity"
             android:exported="false" />
         <activity
             android:name=".FreelancerHomeActivity"
@@ -40,7 +42,7 @@
             android:name=".ClientHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
