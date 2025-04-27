@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/projectTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Project Title"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/projectBudgetText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Budget: $500"/>
+
+    <TextView
+        android:id="@+id/projectDeadlineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deadline: 10 days"/>
+
+    <TextView
+        android:id="@+id/projectSkillsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skills: AutoCAD, 3D modeling"/>
+
+</LinearLayout>
