@@ -1,6 +1,7 @@
 package com.iuxoa.marki;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,9 @@ import com.iuxoa.marki.model.Project;
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
-
-    private List<Project> projectList;
-    private Context context;
+    private static final String TAG = "ProjectAdapter";
+    private final List<Project> projectList;
+    private final Context context;
 
     public ProjectAdapter(List<Project> projectList, Context context) {
         this.projectList = projectList;
@@ -26,7 +27,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @NonNull
     @Override
     public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context)
+        View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_project, parent, false);
         return new ProjectViewHolder(view);
     }
@@ -34,11 +35,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         Project project = projectList.get(position);
-        holder.title.setText(project.getTitle());
-        holder.description.setText(project.getDescription());
+        Log.d(TAG, "Binding project: " + project.getTitle());
+
+        holder.title.setText(project.getTitle() != null ? project.getTitle() : "No Title");
+        holder.description.setText(project.getDescription() != null ? project.getDescription() : "No Description");
         holder.budget.setText(String.format("Budget: $%.2f", project.getBudget()));
-        holder.deadline.setText("Deadline: " + project.getDeadline());
-        holder.skills.setText("Skills: " + project.getSkills());
+        holder.deadline.setText(project.getDeadline() != null ? "Deadline: " + project.getDeadline() : "No Deadline");
+        holder.skills.setText(project.getSkills() != null ? "Skills: " + project.getSkills() : "No Skills Specified");
     }
 
     @Override
@@ -47,7 +50,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     }
 
     public void updateProjects(List<Project> newProjects) {
-        projectList = newProjects;
+        projectList.clear();
+        projectList.addAll(newProjects);
         notifyDataSetChanged();
     }
 

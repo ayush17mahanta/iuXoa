@@ -9,15 +9,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.iuxoa.marki.model.Project;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddProjectActivity extends AppCompatActivity {
 
     private EditText editTextTitle, editTextDescription, editTextBudget, editTextDeadline, editTextSkills;
     private Button buttonSubmit;
-    private DatabaseReference databaseReference;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,9 @@ public class AddProjectActivity extends AppCompatActivity {
         editTextSkills = findViewById(R.id.projectSkills);
         buttonSubmit = findViewById(R.id.submitProjectButton);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Projects");
+        // Initialize Firestore and Auth
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         buttonSubmit.setOnClickListener(v -> addProject());
     }
@@ -43,12 +48,30 @@ public class AddProjectActivity extends AppCompatActivity {
         String budgetStr = editTextBudget.getText().toString().trim();
         String deadline = editTextDeadline.getText().toString().trim();
         String skills = editTextSkills.getText().toString().trim();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Check if user is logged in
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
 
         // Validation
-        if (title.isEmpty() || desc.isEmpty() || budgetStr.isEmpty() ||
-                deadline.isEmpty() || skills.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (title.isEmpty()) {
+            editTextTitle.setError("Title is required");
+            return;
+        }
+        if (desc.isEmpty()) {
+            editTextDescription.setError("Description is required");
+            return;
+        }
+        if (budgetStr.isEmpty()) {
+            editTextBudget.setError("Budget is required");
+            return;
+        }
+        if (deadline.isEmpty()) {
+            editTextDeadline.setError("Deadline is required");
             return;
         }
 
@@ -56,21 +79,37 @@ public class AddProjectActivity extends AppCompatActivity {
         try {
             budget = Double.parseDouble(budgetStr);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid budget amount", Toast.LENGTH_SHORT).show();
+            editTextBudget.setError("Invalid budget amount");
             return;
         }
 
-        String projectId = databaseReference.push().getKey();
+        // Create project object
         Project newProject = new Project(title, desc, budget, deadline, skills, userId);
-        newProject.setId(projectId);
 
-        databaseReference.child(projectId).setValue(newProject)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Project added successfully!", Toast.LENGTH_SHORT).show();
-                    finish();
+        // Add to Firestore
+        db.collection("projects")
+                .add(newProject)
+                .addOnSuccessListener(documentReference -> {
+                    // Set the auto-generated ID
+                    newProject.setId(documentReference.getId());
+
+                    // Optionally update the document to include the ID as a field
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("id", documentReference.getId());
+
+                    db.collection("projects").document(documentReference.getId())
+                            .update(updates)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(AddProjectActivity.this,
+                                        "Project added successfully!",
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to add project: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddProjectActivity.this,
+                            "Failed to add project: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 });
     }
 }

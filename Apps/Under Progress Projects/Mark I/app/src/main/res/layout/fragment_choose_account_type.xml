@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:background="@color/background"
+    android:id="@+id/main">
+
+    <LinearLayout
+        android:padding="20dp"
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="35sp"
+            android:textColor="@color/black"
+            android:foregroundGravity="center" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Account Type"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:foregroundGravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_below="@id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            app:lottie_rawRes="@raw/login_decide"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center"
+            app:lottie_loop="true"/>
+
+        <soup.neumorphism.NeumorphButton
+            android:id="@+id/freelancerButton"
+            style="@style/Widget.Neumorph.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I want to Earn by Doing Projects (Freelancer)"
+            android:textColor="@color/black"
+            app:neumorph_shapeType="flat"/>
+
+        <soup.neumorphism.NeumorphButton
+            android:id="@+id/clientButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.Neumorph.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I want to Post a Project (Client)"
+            android:textColor="@color/black"
+            app:neumorph_shapeType="flat"/>
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="iuXoa"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:foregroundGravity="center" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

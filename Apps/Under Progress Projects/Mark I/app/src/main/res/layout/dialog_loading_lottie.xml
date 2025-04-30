@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TextView for when no projects are available -->
+    <TextView
+        android:id="@+id/noProjectsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No projects found."
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <!-- RecyclerView for displaying projects -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProjects"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Loading Animation (Initially Hidden) -->
+    <RelativeLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <!-- Lottie Animation View -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_animation" />
+    </RelativeLayout>
+
+</RelativeLayout>

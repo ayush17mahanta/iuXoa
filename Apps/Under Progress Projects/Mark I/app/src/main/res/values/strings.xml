@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Free Lan</string>
+    <string name="welcome">Welcome!</string>
+    <string name="lets_get_started">Let\'s get started</string>
+    <string name="enter_mobile_number">Enter your Mobile Number</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">OR</string>
+    <string name="otp">OTP</string>
+    <string name="default_web_client_id">607613668247-gegqatokhnbrl72qk07rjegs6isjv9nf.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">123456789012345</string>
+    <string name="username">username</string>
+    <string name="no_projects_found">No Projects Found</string>
 </resources>

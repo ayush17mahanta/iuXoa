@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".UserNameActivity">
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <soup.neumorphism.NeumorphFloatingActionButton
+            android:id="@+id/back_button"
+            style="@style/Widget.Neumorph.FloatingActionButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_back"
+            app:neumorph_shapeType="flat" />
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Choose username"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="32dp"
+        android:text="You can't change it later"
+        android:textColor="@color/grey" />
+
+    <soup.neumorphism.NeumorphCardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        app:neumorph_shapeType="pressed">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="Username"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingEnd="50dp"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/usernameAvailability"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="Username Availability"
+                android:src="@drawable/ic_tick"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </soup.neumorphism.NeumorphCardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="3–15 chars: lowercase letters, numbers, underscore"
+        android:textColor="@color/button_color"
+        android:textSize="12sp" />
+
+    <soup.neumorphism.NeumorphButton
+        android:id="@+id/next_button"
+        style="@style/Widget.Neumorph.Button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:text="Next"
+        android:textColor="@color/white"
+        app:neumorph_backgroundColor="@color/button_color" />
+</LinearLayout>

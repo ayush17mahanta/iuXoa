@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#f2f2f2</color>
+    <color name="button_color">#d0365a</color>
+    <color name="grey">#d2d2d2</color>
+    <color name="loading_color">#FF9800</color> <!-- Orange shade for loading -->
+
 </resources>

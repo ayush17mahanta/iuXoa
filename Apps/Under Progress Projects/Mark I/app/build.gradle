@@ -39,11 +39,19 @@ dependencies {
     implementation libs.firebase.database
     implementation libs.firebase.analytics
     implementation libs.firebase.firestore
+    implementation libs.androidx.credentials
+    implementation libs.androidx.credentials.play.services.auth
+    implementation libs.googleid
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation 'com.github.fornewid:neumorphism:0.3.0'
     implementation libs.lottie
     implementation platform(libs.firebase.bom)
+    implementation libs.play.services.auth
+    implementation libs.glide // For image loading
+    implementation libs.facebook.login
+    annotationProcessor libs.compiler
+    implementation libs.circleimageview
 
 }

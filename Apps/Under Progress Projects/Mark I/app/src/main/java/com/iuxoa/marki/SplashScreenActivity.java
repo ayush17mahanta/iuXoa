@@ -1,44 +1,35 @@
 package com.iuxoa.marki;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SplashScreenActivity extends AppCompatActivity {
+
     private static final int SPLASH_DELAY = 2000; // 2 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        new Handler().postDelayed(() -> {
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-            String accountType = prefs.getString("accountType", "");
 
-            if (isLoggedIn) {
-                if ("client".equals(accountType)) {
-                    startActivity(new Intent(SplashScreenActivity.this, ClientHomeActivity.class));
-                } else {
-                    startActivity(new Intent(SplashScreenActivity.this, FreelancerHomeActivity.class));
-                }
+        new Handler().postDelayed(() -> {
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            Intent intent;
+
+            if (currentUser != null) {
+                intent = new Intent(SplashScreenActivity.this, ChooseAccountTypeActivity.class);
             } else {
-                startActivity(new Intent(SplashScreenActivity.this, ChooseAccountTypeActivity.class));
+                intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
             }
+
+
+            startActivity(intent);
             finish();
         }, SPLASH_DELAY);
     }
