@@ -9,9 +9,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.iuxoa.marki.R;
 import com.iuxoa.marki.model.Project;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostProjectActivity extends AppCompatActivity {
 
@@ -19,15 +25,18 @@ public class PostProjectActivity extends AppCompatActivity {
             editTextProjectBudget, editTextProjectDeadline, editTextProjectSkills;
     private Button buttonSubmitProject;
     private FirebaseAuth auth;
-    private FirebaseFirestore firestore;
+    private FirebaseFirestore db;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_project);
 
-        firestore = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        currentUserId = currentUser != null ? currentUser.getUid() : null;
 
         // Initialize views
         editTextProjectTitle = findViewById(R.id.projectTitle);
@@ -39,8 +48,27 @@ public class PostProjectActivity extends AppCompatActivity {
 
         buttonSubmitProject.setOnClickListener(v -> {
             Log.d("POST_PROJECT", "Submit button clicked");
-            postProject();
+            verifyAndPostProject();
         });
+    }
+
+    private void verifyAndPostProject() {
+        // First verify account type
+        db.collection("users").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists() && "client".equals(documentSnapshot.getString("accountType"))) {
+                        postProject();
+                    } else {
+                        Toast.makeText(this,
+                                "Only client accounts can post projects",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error verifying account type", Toast.LENGTH_SHORT).show();
+                    Log.e("POST_PROJECT", "Error verifying account", e);
+                });
     }
 
     private void postProject() {
@@ -51,7 +79,7 @@ public class PostProjectActivity extends AppCompatActivity {
         String deadline = editTextProjectDeadline.getText().toString().trim();
         String skills = editTextProjectSkills.getText().toString().trim();
 
-        // Validate inputs first
+        // Validate inputs
         if (title.isEmpty() || description.isEmpty() || budgetStr.isEmpty() ||
                 deadline.isEmpty() || skills.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -66,47 +94,51 @@ public class PostProjectActivity extends AppCompatActivity {
             return;
         }
 
-        String userId = auth.getCurrentUser().getUid();
+        // Create project data
+        Map<String, Object> project = new HashMap<>();
+        project.put("title", title);
+        project.put("description", description);
+        project.put("budget", budget);
+        project.put("deadline", deadline);
+        project.put("skills", skills.split("\\s*,\\s*")); // Convert comma-separated string to array
+        project.put("clientId", currentUserId);
+        project.put("status", "open");
+        project.put("createdAt", FieldValue.serverTimestamp());
 
-        // Step 1: Get current counter value
-        firestore.collection("metadata").document("projectCounter")
+        // Get next project ID
+        db.collection("metadata").document("projectCounter")
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Long count = documentSnapshot.getLong("count");
-                        if (count == null) count = 0L;
+                    long count = documentSnapshot.exists() ?
+                            documentSnapshot.getLong("count") : 0L;
+                    String projectId = "PROJ" + String.format("%03d", count + 1);
 
-                        long newCount = count + 1;
-                        String customProjectId = "PROJ" + String.format("%03d", newCount); // PROJ001, PROJ002, etc.
-
-                        // Step 2: Create project with custom ID
-                        Project project = new Project(title, description, budget, deadline, skills, userId);
-                        project.setId(customProjectId);
-
-                        // Step 3: Save project under custom ID
-                        firestore.collection("projects").document(customProjectId)
-                                .set(project)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(this, "Project posted successfully!", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to post project: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Log.e("POST_PROJECT", "Error posting project", e);
-                                });
-
-                        // Step 4: Update counter
-                        firestore.collection("metadata").document("projectCounter")
-                                .update("count", newCount);
-
-                    } else {
-                        Toast.makeText(this, "Counter document does not exist!", Toast.LENGTH_SHORT).show();
-                    }
+                    // Create the project document
+                    db.collection("projects").document(projectId)
+                            .set(project)
+                            .addOnSuccessListener(aVoid -> {
+                                // Update counter
+                                db.collection("metadata").document("projectCounter")
+                                        .set(Collections.singletonMap("count", count + 1))
+                                        .addOnCompleteListener(updateTask -> {
+                                            Toast.makeText(this,
+                                                    "Project posted successfully!",
+                                                    Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        });
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this,
+                                        "Failed to post project: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                                Log.e("POST_PROJECT", "Error posting project", e);
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to fetch counter: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("POST_PROJECT", "Error fetching counter", e);
+                    Toast.makeText(this,
+                            "Failed to get project counter: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("POST_PROJECT", "Error getting counter", e);
                 });
     }
-
 }

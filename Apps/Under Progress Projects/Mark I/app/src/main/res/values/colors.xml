@@ -5,6 +5,8 @@
     <color name="background">#f2f2f2</color>
     <color name="button_color">#d0365a</color>
     <color name="grey">#d2d2d2</color>
-    <color name="loading_color">#FF9800</color> <!-- Orange shade for loading -->
+    <color name="loading_color">#FF9800</color>
+    <color name="chip_background">#4CAF50</color> <!-- Soft green, or pick your own -->
+    <!-- Orange shade for loading -->
 
 </resources>

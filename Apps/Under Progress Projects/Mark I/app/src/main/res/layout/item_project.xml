@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,35 +14,90 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Project Title -->
         <TextView
             android:id="@+id/projectTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:maxLines="2"
+            android:ellipsize="end"/>
 
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#E0E0E0" />
+
+        <!-- Description -->
         <TextView
             android:id="@+id/projectDescriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:textColor="#555555"
+            android:maxLines="3"
+            android:ellipsize="end"/>
 
-        <TextView
-            android:id="@+id/projectBudgetText"
+        <!-- Budget & Deadline with icons -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="start">
 
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_info_details"
+                android:layout_marginEnd="4dp"
+                app:tint="#4CAF50" />
+
+            <TextView
+                android:id="@+id/projectBudgetText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_today"
+                android:layout_marginEnd="4dp"
+                app:tint="#2196F3" />
+
+            <TextView
+                android:id="@+id/projectDeadlineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#2196F3"/>
+        </LinearLayout>
+
+        <!-- Skills -->
         <TextView
-            android:id="@+id/projectDeadlineText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"/>
+            android:text="Skills:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textColor="#333333" />
 
-        <TextView
-            android:id="@+id/projectSkillsText"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/projectSkillsChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            app:singleLine="false"
+            app:chipSpacing="8dp"/>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

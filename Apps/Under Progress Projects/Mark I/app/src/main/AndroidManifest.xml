@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MarkI"
         tools:targetApi="31">
         <activity
+            android:name=".ProjectTimestampFixerActivity"
+            android:exported="false" />
+        <activity
             android:name=".BaseHomeFragment"
             android:exported="false" />
         <activity
@@ -67,10 +70,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        
         <meta-data
             android:name="firebase_performance_logcat_enabled"
-            android:value="true"/>
+            android:value="true" />
     </application>
 
 </manifest>

@@ -61,7 +61,7 @@ public class Project {
     @PropertyName("skills")
     public void setSkills(String skills) { this.skills = skills; }
 
-    @PropertyName("user_id") // Using snake_case for Firestore field name
+    @PropertyName("user_id")
     public String getUserId() { return userId; }
 
     @PropertyName("user_id")
