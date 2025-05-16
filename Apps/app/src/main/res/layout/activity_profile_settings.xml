@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profileScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile Settings"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnUpdatePayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Payment Info" />
+
+        <Button
+            android:id="@+id/btnExportData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export My Data"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btnDeleteData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete My Data"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

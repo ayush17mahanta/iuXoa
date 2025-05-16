@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491212794186",
+    "project_id": "datadrop-iuxoa",
+    "storage_bucket": "datadrop-iuxoa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491212794186:android:42637c13e6d4f717a5b9b3",
+        "android_client_info": {
+          "package_name": "com.iuxoa.datadrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB48iVp_aIhpzIir0OFb8XWqZH5FZ2ZIH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
