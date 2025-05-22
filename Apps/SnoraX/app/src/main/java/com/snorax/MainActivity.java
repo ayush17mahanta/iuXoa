@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -40,9 +44,6 @@ import java.util.Locale;
 
 import soup.neumorphism.NeumorphButton;
 import soup.neumorphism.NeumorphFloatingActionButton;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,15 +76,41 @@ public class MainActivity extends AppCompatActivity {
         checkNotificationPolicyAccess();
         initializePreferences();
         applyTheme();
-        showTutorialIfNeeded();
         loadPreferences();
         updateTable();
         updateUIFromSystemState();
         setupClickListeners();
         String initialState = sharedPreferences.getString("last_mode", "Normal");
         updateStatusDisplay(initialState);
+
+        // Show tutorial on first launch
+        showTutorialIfNeeded();
     }
 
+    private void showTutorialIfNeeded() {
+        boolean tutorialShown = sharedPreferences.getBoolean("tutorial_shown", false);
+        if (!tutorialShown) {
+            new TutorialHelper(this)
+                    .setOnComplete(() -> {
+                        sharedPreferences.edit().putBoolean("tutorial_shown", true).apply();
+                        Toast.makeText(this, "Tutorial completed!", Toast.LENGTH_SHORT).show();
+                    })
+                    .startTutorial();
+        }
+    }
+
+    public void resetTutorial() {
+        sharedPreferences.edit().putBoolean("tutorial_shown", false).apply();
+        showTutorialIfNeeded();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getBooleanExtra("reset_tutorial", false)) {
+            resetTutorial();
+        }
+    }
 
     private void initializeViews() {
         tblWeeklySchedule = findViewById(R.id.tblWeeklySchedule);
@@ -122,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     private void updateStatusDisplay(String currentState) {
         String nextState;
         int currentColor;
@@ -143,13 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
 
-        // Update TextViews
         tvCurrentStatus.setText("Current Mode: " + currentState);
         tvCurrentStatus.setTextColor(currentColor);
-
         tvNextStatus.setText("Next Click: " + nextState);
-
-        // Update system status
         updateSystemStatus(currentState);
     }
 
@@ -168,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializePreferences() {
-        sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
         analyticsPreferences = getSharedPreferences("analytics_prefs", MODE_PRIVATE);
     }
 
@@ -187,29 +211,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showTutorialIfNeeded() {
-        boolean tutorialShown = sharedPreferences.getBoolean("tutorial_shown", false);
-        if (!tutorialShown) {
-            showTutorial();
-            sharedPreferences.edit().putBoolean("tutorial_shown", true).apply();
-        }
-    }
-
-    private void showTutorial() {
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500);
-
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, "tutorial_sequence");
-        sequence.setConfig(config);
-
-        sequence.addSequenceItem(fabBell, "Notification Button", "This button allows you to mute, unmute, or set vibrate mode for all lectures.");
-        sequence.addSequenceItem(btnLectureCount, "Lecture Count", "Set the number of lectures per day using this button.");
-        sequence.addSequenceItem(btnStartTime, "Start Time", "Set the start time for your lectures using this button.");
-        sequence.addSequenceItem(btnDuration, "Duration", "Set the duration of each lecture using this button.");
-
-        sequence.start();
-    }
-
     private void setupClickListeners() {
         btnSettings.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
         btnFilters.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, FiltersActivity.class)));
@@ -219,16 +220,27 @@ public class MainActivity extends AppCompatActivity {
 
         fabBell.setOnClickListener(v -> {
             if (!sharedPreferences.getBoolean("fab_tip_shown", false)) {
-                new MaterialShowcaseView.Builder(this)
-                        .setTarget(fabBell)
-                        .setTitleText("Tip")
-                        .setContentText("You can mute, unmute, or set vibrate mode for all lectures here.")
-                        .setDismissText("GOT IT")
-                        .setDelay(500)
-                        .show();
-                sharedPreferences.edit().putBoolean("fab_tip_shown", true).apply();
+                TapTargetView.showFor(this,
+                        TapTarget.forView(fabBell, "Tip", "You can mute, unmute, or set vibrate mode for all lectures here.")
+                                .outerCircleAlpha(0.7f)
+                                .titleTextColor(android.R.color.white)
+                                .descriptionTextColor(android.R.color.white)
+                                .textTypeface(Typeface.SANS_SERIF)
+                                .drawShadow(true)
+                                .cancelable(true)
+                                .tintTarget(true)
+                                .transparentTarget(true),
+                        new TapTargetView.Listener() {
+                            @Override
+                            public void onTargetClick(TapTargetView view) {
+                                super.onTargetClick(view);
+                                sharedPreferences.edit().putBoolean("fab_tip_shown", true).apply();
+                                onFabBellClick();
+                            }
+                        });
+            } else {
+                onFabBellClick();
             }
-            onFabBellClick();
         });
 
         btnEmergencySettings.setOnClickListener(v -> openEmergencySettings());
@@ -325,13 +337,13 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             return nm.isNotificationPolicyAccessGranted();
         }
-        return true; // No restriction pre-Android 7.0
+        return true;
     }
 
     private void showPolicyAccessDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Permission Required")
-                .setMessage("This app needs notification policy access to change ringer modes. Please grant this permission in settings.")
+                .setMessage("This app needs notification policy access to change ringer modes.")
                 .setPositiveButton("Open Settings", (d, w) -> {
                     Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                     startActivity(intent);
@@ -344,11 +356,9 @@ public class MainActivity extends AppCompatActivity {
         String currentMode = SystemControl.getCurrentRingerModeString(this);
 
         runOnUiThread(() -> {
-            // Update status TextViews
             tvCurrentStatus.setText("Current Mode: " + currentMode);
             tvNextStatus.setText("Next Click: " + getNextMode(currentMode));
 
-            // Update all buttons
             for (Button button : lectureButtons) {
                 updateButtonAppearance(button, currentMode);
             }
@@ -361,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (!notificationManager.isNotificationPolicyAccessGranted()) {
-                // You might want to show a more user-friendly explanation here
                 Toast.makeText(this,
                         "Please grant notification policy access in settings",
                         Toast.LENGTH_LONG).show();
@@ -371,8 +380,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     private String getNextMode(String currentMode) {
         switch (currentMode) {
@@ -462,7 +469,6 @@ public class MainActivity extends AppCompatActivity {
         PopupMenu popupMenu = new PopupMenu(this, fabBell);
         popupMenu.getMenuInflater().inflate(R.menu.menu_fab_bell, popupMenu.getMenu());
 
-        // For API 29+ to show icons in PopupMenu
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             popupMenu.setForceShowIcon(true);
         }
@@ -486,7 +492,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAllLectures(String targetMode) {
-        // Change system to this mode
         switch (targetMode) {
             case "Normal":
                 SystemControl.setRingerMode(this, SystemControl.ACTION_NORMAL);
@@ -499,18 +504,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        // UI will update automatically via BroadcastReceiver
         Toast.makeText(this, "All set to " + targetMode, Toast.LENGTH_SHORT).show();
         savePreferences();
-    }
-
-    private String getNextState(String currentState) {
-        switch (currentState) {
-            case "Normal": return "Vibrate";
-            case "Vibrate": return "Silent";
-            case "Silent": return "Normal";
-            default: return "Normal";
-        }
     }
 
     private void openLecturePicker() {
@@ -550,7 +545,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTable() {
-        // Clear existing views and buttons
         tblWeeklySchedule.removeAllViews();
         lectureButtons.clear();
 
@@ -561,14 +555,12 @@ public class MainActivity extends AppCompatActivity {
                 TableRow.LayoutParams.WRAP_CONTENT
         ));
 
-        // Add empty header for day column
         TextView emptyHeader = new TextView(this);
         emptyHeader.setText("");
         emptyHeader.setPadding(16, 16, 16, 16);
         emptyHeader.setGravity(Gravity.CENTER);
         headerRow.addView(emptyHeader);
 
-        // Add lecture number headers
         for (int i = 0; i < lectureCount; i++) {
             TextView lectureHeader = new TextView(this);
             lectureHeader.setText("Lec " + (i + 1));
@@ -578,11 +570,9 @@ public class MainActivity extends AppCompatActivity {
         }
         tblWeeklySchedule.addView(headerRow);
 
-        // Get current system state
         String currentSystemMode = SystemControl.getCurrentRingerModeString(this);
         String nextSystemMode = getNextMode(currentSystemMode);
 
-        // Create rows for each day
         for (String day : daysOfWeek) {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(
@@ -590,30 +580,23 @@ public class MainActivity extends AppCompatActivity {
                     TableRow.LayoutParams.WRAP_CONTENT
             ));
 
-            // Add day label
             TextView dayTextView = new TextView(this);
             dayTextView.setText(day);
             dayTextView.setPadding(16, 16, 16, 16);
             dayTextView.setGravity(Gravity.CENTER);
             row.addView(dayTextView);
 
-            // Add buttons for each lecture
             for (int i = 0; i < lectureCount; i++) {
                 Button lectureButton = new Button(this);
 
-                // Set initial state - use system state as default
                 String key = day + "_lecture_" + i;
                 String initialState = sharedPreferences.getString(key, nextSystemMode);
                 lectureButton.setText(initialState);
 
-                // Style the button based on current system state
                 updateButtonAppearance(lectureButton, currentSystemMode);
 
                 lectureButton.setPadding(16, 16, 16, 16);
-                lectureButton.setOnClickListener(v -> {
-                    toggleLectureState();
-                    // UI updates automatically via BroadcastReceiver
-                });
+                lectureButton.setOnClickListener(v -> toggleLectureState());
 
                 lectureButtons.add(lectureButton);
                 row.addView(lectureButton);
@@ -638,11 +621,8 @@ public class MainActivity extends AppCompatActivity {
                 color = ContextCompat.getColor(this, R.color.normal_mode);
         }
 
-        // Modern way to set button background
         button.setBackgroundTintList(ColorStateList.valueOf(color));
         button.setTextColor(ContextCompat.getColor(this, android.R.color.white));
-
-        // Update button text to show next action
         button.setText(getNextMode(currentMode));
     }
 }

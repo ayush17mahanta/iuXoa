@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".SnoraxApp"
@@ -22,6 +23,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SnoraX"
         tools:targetApi="31">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".BootReceiver"
@@ -30,37 +47,40 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".ActionReceiver"
             android:enabled="true"
-            android:exported="false" />
-
-
-
-        <!-- Activities -->
+            android:exported="false" /> <!-- Activities -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false">
 
-        <!-- Other activities -->
-        <activity android:name=".AnalyticsActivity" android:exported="false" />
-        <activity android:name=".ProfilesActivity" android:exported="false" />
-        <activity android:name=".EditProfileActivity" android:exported="false" />
-        <activity android:name=".FeedbackActivity" android:exported="false" />
-        <activity android:name=".SettingsActivity" android:exported="false" />
-        <activity android:name=".FiltersActivity" android:exported="false" />
-        <activity android:name=".EditFilterActivity" android:exported="false" />
-
-        <!-- Emergency Bypass Service -->
+        </activity> <!-- Other activities -->
+        <activity
+            android:name=".AnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfilesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FiltersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditFilterActivity"
+            android:exported="false" /> <!-- Emergency Bypass Service -->
         <service
             android:name=".EmergencyBypassService"
             android:exported="true"
@@ -70,4 +90,5 @@
             </intent-filter>
         </service>
     </application>
+
 </manifest>

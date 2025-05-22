@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705507082179",
+    "project_id": "iuxoa-snorax",
+    "storage_bucket": "iuxoa-snorax.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705507082179:android:547a1022f93c55c548c776",
+        "android_client_info": {
+          "package_name": "com.snorax"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfgux8VgfK0eCAW_b5P4dGYSVDm4jHcxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

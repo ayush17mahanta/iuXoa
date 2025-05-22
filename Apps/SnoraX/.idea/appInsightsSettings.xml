@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.snorax" />
+                  <option name="mobileSdkAppId" value="1:705507082179:android:547a1022f93c55c548c776" />
+                  <option name="projectId" value="iuxoa-snorax" />
+                  <option name="projectNumber" value="705507082179" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

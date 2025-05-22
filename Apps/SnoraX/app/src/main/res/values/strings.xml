@@ -12,7 +12,8 @@
     <string name="day">Day</string>
     <string name="lecture">Lec %d</string>
     <string name="lecture_header">Lec %d</string>
-
+    <string name="default_web_client_id">705507082179-bepfc47vf4l59c04n3537gqo71iqc598.apps.googleusercontent.com</string>
+    <string name="tutorial_completed">Tutorial completed!</string>
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="french">French</string>

@@ -42,7 +42,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/ic_launcher_foreground"/>
 
             <soup.neumorphism.NeumorphCardView
                 android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't have an account? "
+                    android:text="Already have an account? "
                     android:textColor="@color/black"
                     android:textSize="14sp"/>
 
@@ -130,7 +130,7 @@
                     android:id="@+id/signupRedirect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
+                    android:text="Login In"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="14sp"

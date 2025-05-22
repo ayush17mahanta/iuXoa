@@ -1,61 +1,74 @@
 package com.snorax;
 
 import android.app.Activity;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+import android.graphics.Typeface;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 
 public class TutorialHelper {
 
-    private Activity activity;
+    private final Activity activity;
+    private Runnable onComplete;
+    private boolean skippable = true;
 
     public TutorialHelper(Activity activity) {
         this.activity = activity;
     }
 
+    public TutorialHelper setOnComplete(Runnable onComplete) {
+        this.onComplete = onComplete;
+        return this;
+    }
+
+    public TutorialHelper setSkippable(boolean skippable) {
+        this.skippable = skippable;
+        return this;
+    }
+
     public void startTutorial() {
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // Delay between showcases
+        new TapTargetSequence(activity)
+                .targets(
+                        createTarget(R.id.fabBell, "Notification Button",
+                                "Mute/unmute or set vibrate mode for all lectures"),
+                        createTarget(R.id.btnLectureCount, "Lecture Count",
+                                "Set number of lectures per day"),
+                        createTarget(R.id.btnStartTime, "Start Time",
+                                "Set your first lecture time"),
+                        createTarget(R.id.btnDuration, "Duration",
+                                "Set duration for each lecture")
+                )
+                .listener(new TapTargetSequence.Listener() {
+                    @Override
+                    public void onSequenceFinish() {
+                        if (onComplete != null) onComplete.run();
+                    }
 
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(activity, "tutorial_sequence");
-        sequence.setConfig(config);
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        // Optional step handling
+                    }
 
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(activity)
-                        .setTarget(activity.findViewById(R.id.fabBell))
-                        .setTitleText("Notification Button")
-                        .setContentText("This button allows you to mute, unmute, or set vibrate mode for all lectures.")
-                        .setDismissText("GOT IT")
-                        .build()
-        );
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        // Handle cancellation
+                    }
+                })
+                .continueOnCancel(skippable)
+                .start();
+    }
 
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(activity)
-                        .setTarget(activity.findViewById(R.id.btnLectureCount))
-                        .setTitleText("Lecture Count")
-                        .setContentText("Set the number of lectures per day using this button.")
-                        .setDismissText("GOT IT")
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(activity)
-                        .setTarget(activity.findViewById(R.id.btnStartTime))
-                        .setTitleText("Start Time")
-                        .setContentText("Set the start time for your lectures using this button.")
-                        .setDismissText("GOT IT")
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(activity)
-                        .setTarget(activity.findViewById(R.id.btnDuration))
-                        .setTitleText("Duration")
-                        .setContentText("Set the duration of each lecture using this button.")
-                        .setDismissText("GOT IT")
-                        .build()
-        );
-
-        sequence.start();
+    private TapTarget createTarget(int viewId, String title, String description) {
+        return TapTarget.forView(activity.findViewById(viewId), title, description)
+                .outerCircleColor(R.color.black)
+                .outerCircleAlpha(0.7f)
+                .targetCircleColor(android.R.color.white)
+                .titleTextColor(android.R.color.white)
+                .descriptionTextColor(android.R.color.white)
+                .textTypeface(Typeface.SANS_SERIF)
+                .dimColor(android.R.color.black)
+                .drawShadow(true)
+                .cancelable(skippable)
+                .tintTarget(true)
+                .transparentTarget(true);
     }
 }

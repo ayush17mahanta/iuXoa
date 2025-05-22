@@ -7,9 +7,8 @@
     android:background="@color/background">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center|top"
         android:orientation="vertical">
 
@@ -34,7 +33,7 @@
         <LinearLayout
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="50dp"
             android:orientation="vertical">
 
@@ -42,9 +41,10 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/ic_launcher_foreground"/>
 
             <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="20dp"
@@ -67,6 +67,7 @@
 
 
             <soup.neumorphism.NeumorphCardView
+                style="@style/Widget.Neumorph.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginStart="20dp"
@@ -99,6 +100,16 @@
                         android:contentDescription="Toggle Password Visibility"/>
                 </RelativeLayout>
             </soup.neumorphism.NeumorphCardView>
+
+            <TextView
+                android:id="@+id/forgetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forget Password?"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginStart="45dp"/>
+
 
             <soup.neumorphism.NeumorphButton
                 style="@style/Widget.Neumorph.Button"
@@ -149,6 +160,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/google"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_margin="10dp"/>
                 <ImageView
                     android:id="@+id/facebookSignIn"
