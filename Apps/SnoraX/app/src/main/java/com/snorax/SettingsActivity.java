@@ -1,84 +1,113 @@
 package com.snorax;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+
+import java.util.Arrays;
+import java.util.Locale;
+
+import soup.neumorphism.NeumorphButton;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private RadioGroup rgTheme;
-    private Button btnSaveTheme;
+    private Spinner spinnerTheme, chooseLanguage;
+    private NeumorphButton btnLogout;
     private SharedPreferences sharedPreferences;
+
+    private static final String PREF_NAME = "UserSettings";
+    private static final String KEY_LANGUAGE = "app_language";
+
+    private final String[] languages = {"English", "Hindi"};
+    private final String[] langCodes = {"en", "hi"};
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences prefs = newBase.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String langCode = prefs.getString(KEY_LANGUAGE, "en");
+        Context context = updateBaseContextLocale(newBase, langCode);
+        super.attachBaseContext(context);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Initialize theme before super.onCreate to prevent flash
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Initialize Views
-        rgTheme = findViewById(R.id.rgTheme);
-        btnSaveTheme = findViewById(R.id.btnSaveTheme);
-
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE);
-
-        // Load the saved theme
-        String savedTheme = sharedPreferences.getString("theme", "light");
-        switch (savedTheme) {
-            case "light":
-                rgTheme.check(R.id.rbLight);
-                break;
-            case "dark":
-                rgTheme.check(R.id.rbDark);
-                break;
-            case "system":
-                rgTheme.check(R.id.rbSystem);
-                break;
-        }
-
-        // Set up the Save Theme button
-        btnSaveTheme.setOnClickListener(v -> saveTheme());
+        setupLanguageSpinner();
+        setupLogoutButton();
     }
 
-    private void saveTheme() {
-        String selectedTheme = "";
-        int selectedId = rgTheme.getCheckedRadioButtonId();
 
-        if (selectedId == R.id.rbLight) {
-            selectedTheme = "light";
-        } else if (selectedId == R.id.rbDark) {
-            selectedTheme = "dark";
-        } else if (selectedId == R.id.rbSystem) {
-            selectedTheme = "system";
+
+
+    private void setupLanguageSpinner() {
+        chooseLanguage = findViewById(R.id.chooseLanguage);
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                languages
+        );
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chooseLanguage.setAdapter(languageAdapter);
+
+        String currentLangCode = sharedPreferences.getString(KEY_LANGUAGE, "en");
+        int langIndex = Arrays.asList(langCodes).indexOf(currentLangCode);
+        if (langIndex >= 0) {
+            chooseLanguage.setSelection(langIndex);
         }
 
-        // Save the selected theme
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("theme", selectedTheme);
-        editor.apply();
+        chooseLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedLangCode = langCodes[position];
+                if (!selectedLangCode.equals(sharedPreferences.getString(KEY_LANGUAGE, "en"))) {
+                    sharedPreferences.edit().putString(KEY_LANGUAGE, selectedLangCode).apply();
+                    applyLocale(selectedLangCode);
+                    recreate();
+                }
+            }
 
-        // Apply the selected theme
-        applyTheme(selectedTheme);
-
-        Toast.makeText(this, "Theme saved", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
-    private void applyTheme(String theme) {
-        switch (theme) {
-            case "light":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                break;
-            case "dark":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                break;
-            case "system":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
-        }
+    private void setupLogoutButton() {
+        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(v -> {
+            SharedPrefManager.logout(getApplicationContext());
+            Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private Context updateBaseContextLocale(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = context.getResources().getConfiguration();
+        config.setLocale(locale);
+        return context.createConfigurationContext(config);
+    }
+
+    private void applyLocale(String langCode) {
+        Locale locale = new Locale(langCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 }

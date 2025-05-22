@@ -164,19 +164,6 @@
                 android:layout_gravity="center"
                 app:neumorph_shapeType="flat" />
 
-            <!-- Preferences Button -->
-            <soup.neumorphism.NeumorphButton
-                android:id="@+id/btnPreferences"
-                style="@style/Widget.Neumorph.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/android:textColorPrimary"
-                android:text="Preferences"
-                android:fontFamily="@font/gorva"
-                android:textSize="10sp"
-                android:layout_gravity="center"
-                app:neumorph_shapeType="flat" />
-
             <soup.neumorphism.NeumorphButton
                 android:id="@+id/btnAnalytics"
                 style="@style/Widget.Neumorph.Button"

@@ -1,7 +1,6 @@
 package com.snorax;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -18,14 +17,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         new Handler().postDelayed(() -> {
-            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-            boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-
-            if (isLoggedIn) {
+            if (SharedPrefManager.isLoggedIn(getApplicationContext())) {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
             } else {
                 startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
             }
+
             finish();
         }, SPLASH_DELAY);
     }

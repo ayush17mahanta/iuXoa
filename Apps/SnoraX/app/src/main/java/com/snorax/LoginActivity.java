@@ -2,7 +2,6 @@ package com.snorax;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -46,10 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Redirect if already logged in
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        if (prefs.getBoolean("isLoggedIn", false)) {
-            startActivity(new Intent(this, MainActivity.class));
+        // ✅ Redirect to MainActivity if already logged in
+        if (SharedPrefManager.isLoggedIn(getApplicationContext())) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
             return;
         }
@@ -229,7 +227,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveLoginState() {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        prefs.edit().putBoolean("isLoggedIn", true).apply();
+        SharedPrefManager.saveLoginState(getApplicationContext(), true);
     }
 }

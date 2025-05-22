@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initializeViews();
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Show tutorial on first launch
         showTutorialIfNeeded();
+
+
     }
 
     private void showTutorialIfNeeded() {
