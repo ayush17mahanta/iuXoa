@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"
+        android:title="Home"
+        android:icon="@drawable/home"/>
+
+    <item android:id="@+id/nav_doctor"
+        android:title="Analytics"
+        android:icon="@drawable/analytics"/>
+
+    <item android:id="@+id/nav_shop"
+        android:title="Upcomimg \n feature"
+        android:icon="@drawable/upcoming"/>
+
+    <item android:id="@+id/nav_smart"
+        android:title="Profiles"
+        android:icon="@drawable/profile"/>
+
+    <item android:id="@+id/nav_settings"
+        android:title="Settings"
+        android:icon="@drawable/settings"/>
+</menu>
