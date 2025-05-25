@@ -3,9 +3,7 @@
     <style name="Base.Theme.SnoraX" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Use the same colors for both light and dark themes -->
         <item name="android:textColorPrimary">@color/black</item>
-        <!-- You can add other color customizations as needed -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="android:fitsSystemWindows">true</item>
+
 
 
     </style>

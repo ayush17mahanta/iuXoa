@@ -1,6 +1,7 @@
 package com.snorax;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -11,8 +12,8 @@ public class TutorialHelper {
     private Runnable onComplete;
     private boolean skippable = true;
 
-    public TutorialHelper(Activity activity) {
-        this.activity = activity;
+    public TutorialHelper(Context activity) {
+        this.activity = (Activity) activity;
     }
 
     public TutorialHelper setOnComplete(Runnable onComplete) {

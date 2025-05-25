@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".SettingsActivity">
+    android:background="@color/background"
+    tools:context=".SettingsFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,11 +39,24 @@
     </LinearLayout>
 
     <soup.neumorphism.NeumorphButton
+        android:id="@+id/btnFeedback"
+        style="@style/Widget.Neumorph.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Feedback"
+        android:textColor="?attr/android:textColorPrimary"
+        android:fontFamily="@font/gorva"
+        android:textSize="10sp"
+        android:layout_marginTop="35dp"
+
+        app:neumorph_shapeType="flat" />
+
+    <soup.neumorphism.NeumorphButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logout"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:textColor="@color/white"
         style="@style/Widget.Neumorph.Button"
         app:neumorph_shapeType="flat"

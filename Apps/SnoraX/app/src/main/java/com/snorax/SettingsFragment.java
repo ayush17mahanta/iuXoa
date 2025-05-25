@@ -5,19 +5,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.Arrays;
 import java.util.Locale;
 
 import soup.neumorphism.NeumorphButton;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsFragment extends Fragment {
 
     private Spinner spinnerTheme, chooseLanguage;
     private NeumorphButton btnLogout;
@@ -30,32 +34,31 @@ public class SettingsActivity extends AppCompatActivity {
     private final String[] langCodes = {"en", "hi"};
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences prefs = newBase.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // Apply language settings when fragment attaches
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String langCode = prefs.getString(KEY_LANGUAGE, "en");
-        Context context = updateBaseContextLocale(newBase, langCode);
-        super.attachBaseContext(context);
+        updateBaseContextLocale(context, langCode);
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // Initialize theme before super.onCreate to prevent flash
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        setupLanguageSpinner();
-        setupLogoutButton();
+        setupLanguageSpinner(view);
+        setupLogoutButton(view);
+
+        return view;
     }
 
-
-
-
-    private void setupLanguageSpinner() {
-        chooseLanguage = findViewById(R.id.chooseLanguage);
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+    private void setupLanguageSpinner(View view) {
+        chooseLanguage = view.findViewById(R.id.chooseLanguage);
+        sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(
-                this,
+                requireContext(),
                 android.R.layout.simple_spinner_item,
                 languages
         );
@@ -75,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (!selectedLangCode.equals(sharedPreferences.getString(KEY_LANGUAGE, "en"))) {
                     sharedPreferences.edit().putString(KEY_LANGUAGE, selectedLangCode).apply();
                     applyLocale(selectedLangCode);
-                    recreate();
+                    requireActivity().recreate();
                 }
             }
 
@@ -84,14 +87,14 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setupLogoutButton() {
-        btnLogout = findViewById(R.id.btnLogout);
+    private void setupLogoutButton(View view) {
+        btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(v -> {
-            SharedPrefManager.logout(getApplicationContext());
-            Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+            SharedPrefManager.logout(requireContext());
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish();
+            requireActivity().finish();
         });
     }
 

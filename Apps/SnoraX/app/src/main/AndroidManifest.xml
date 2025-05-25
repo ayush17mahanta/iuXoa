@@ -61,20 +61,9 @@
 
         </activity> <!-- Other activities -->
         <activity
-            android:name=".AnalyticsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfilesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".FeedbackActivity"
             android:exported="false" />
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".FiltersActivity"
             android:exported="false" />

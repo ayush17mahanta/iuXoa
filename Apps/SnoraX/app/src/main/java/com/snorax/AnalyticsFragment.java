@@ -3,10 +3,18 @@ package com.snorax;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Context;
 
-import androidx.appcompat.app.AppCompatActivity;
+
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -17,31 +25,33 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnalyticsActivity extends AppCompatActivity {
+public class AnalyticsFragment extends Fragment {
 
     private PieChart pieChart;
     private TextView tvTimeSaved;
     private Button btnShare;
     private SharedPreferences analyticsPreferences;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_analytics);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_analytics, container, false);
 
         // Initialize Views
-        pieChart = findViewById(R.id.pieChart);
-        tvTimeSaved = findViewById(R.id.tvTimeSaved);
-        btnShare = findViewById(R.id.btnShare);
+        pieChart = view.findViewById(R.id.pieChart);
+        tvTimeSaved = view.findViewById(R.id.tvTimeSaved);
+        btnShare = view.findViewById(R.id.btnShare);
 
         // Initialize SharedPreferences
-        analyticsPreferences = getSharedPreferences("analytics_prefs", MODE_PRIVATE);
+        analyticsPreferences = requireContext().getSharedPreferences("analytics_prefs", Context.MODE_PRIVATE);
 
         // Load and display analytics data
         loadAnalyticsData();
 
         // Set up the Share button
         btnShare.setOnClickListener(v -> shareAnalytics());
+
+        return view;
     }
 
     private void loadAnalyticsData() {
@@ -104,5 +114,36 @@ public class AnalyticsActivity extends AppCompatActivity {
 
         // Start the share activity
         startActivity(Intent.createChooser(shareIntent, "Share via"));
+    }
+
+    // AnalyticsData class (inner class or separate file)
+    private static class AnalyticsData {
+        private final int muteCount;
+        private final int unmuteCount;
+        private final int vibrateCount;
+        private final long timeSaved;
+
+        public AnalyticsData(int muteCount, int unmuteCount, int vibrateCount, long timeSaved) {
+            this.muteCount = muteCount;
+            this.unmuteCount = unmuteCount;
+            this.vibrateCount = vibrateCount;
+            this.timeSaved = timeSaved;
+        }
+
+        public int getMuteCount() {
+            return muteCount;
+        }
+
+        public int getUnmuteCount() {
+            return unmuteCount;
+        }
+
+        public int getVibrateCount() {
+            return vibrateCount;
+        }
+
+        public long getTimeSaved() {
+            return timeSaved;
+        }
     }
 }
