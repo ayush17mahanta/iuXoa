@@ -1,0 +1,5 @@
+com.iuxoa.paradoxone.test.app-core-1.6.1-0 C:\Users\Ayush Mahanta\.gradle\caches\8.9\transforms\5bcfccffefe424eced3e42cc9266111b\transformed\core-1.6.1\res
+com.iuxoa.paradoxone.test.app-androidTest-1 C:\Users\Ayush Mahanta\Documents\GitHub\iuXoa\Paradox One\app\build\generated\res\resValues\androidTest\debug
+com.iuxoa.paradoxone.test.app-mergeDebugAndroidTestResources-2 C:\Users\Ayush Mahanta\Documents\GitHub\iuXoa\Paradox One\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.iuxoa.paradoxone.test.app-mergeDebugAndroidTestResources-3 C:\Users\Ayush Mahanta\Documents\GitHub\iuXoa\Paradox One\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.iuxoa.paradoxone.test.app-debugAndroidTest-4 C:\Users\Ayush Mahanta\Documents\GitHub\iuXoa\Paradox One\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

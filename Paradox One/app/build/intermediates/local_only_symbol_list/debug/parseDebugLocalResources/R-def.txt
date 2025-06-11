@@ -1,0 +1,34 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id btnExit
+id btnProfile
+id btnStart
+id btn_leaderboard
+id btn_settings
+id close_button
+id close_philosophy_button
+id game_view
+id leaderboard_list
+id level_text
+id philosophy_text
+id run_count_text
+id score_text
+id summary_text
+id title
+id titleText
+layout activity_game
+layout activity_leaderboard
+layout activity_main
+layout dialog_philosophy
+layout dialog_summary
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.ParadoxOne
+style Theme.ParadoxOne
+xml backup_rules
+xml data_extraction_rules

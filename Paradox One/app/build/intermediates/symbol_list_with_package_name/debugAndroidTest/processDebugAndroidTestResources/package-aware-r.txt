@@ -1,0 +1,3 @@
+com.iuxoa.paradoxone.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
