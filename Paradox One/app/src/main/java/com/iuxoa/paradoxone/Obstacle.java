@@ -5,33 +5,45 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Obstacle {
+    private float swayPhase = (float)(Math.random() * 2 * Math.PI);
+    private float swayAmplitude = 10f;
+    private float speedY = 12;
+    private boolean active = false;
+    private float screenWidth;
+    private float screenHeight;
 
     public float x, y;
     public float width, height;
-
     private Paint paint;
+    private String type; // "Time", "Fear", "Memory"
 
-    private String type;  // "Time", "Fear", "Memory"
-
-    private float speedY;
-
-    public Obstacle(float x, float y, float width, float height, String type) {
+    public Obstacle(float x, float y, float width, float height,
+                    String type, float screenWidth, float screenHeight) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.type = type;
-
-        paint = new Paint();
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.paint = new Paint();
         setStyleByType();
+    }
 
-        speedY = 12;  // Default speed
+    // Add a simplified constructor for the pool initialization
+    public Obstacle(float x, float y, float width, float height, String type) {
+        this(x, y, width, height, type, 0, 0); // screen dimensions will be set when spawned
+    }
+
+    public void setDimensions(float width, float height) {
+        this.width = width;
+        this.height = height;
     }
 
     private void setStyleByType() {
         switch (type) {
             case "Time":
-                paint.setColor(Color.parseColor("#FFD700")); // Gold/yellow
+                paint.setColor(Color.parseColor("#FFD700")); // Gold
                 break;
             case "Fear":
                 paint.setColor(Color.parseColor("#FF4500")); // OrangeRed
@@ -44,39 +56,71 @@ public class Obstacle {
                 break;
         }
     }
-    // In Obstacle.java
-    public float getX() { return x; }
-    public float getY() { return y; }
-    public float getWidth() { return width; }
-    public float getHeight() { return height; }
 
+    public void update(float gameSpeed) {
+        if (!active) return;
 
-    public void update() {
-        // Movement differs by type for some variation
+        // Base movement
+        y += gameSpeed;
+
         switch (type) {
             case "Time":
-                y += speedY; // steady fall
+                y += gameSpeed * 0.8f - gameSpeed;
                 break;
             case "Fear":
-                y += speedY * 1.2f; // faster fall
-                // Optional: jitter side to side
-                x += (Math.random() - 0.5) * 8;
+                y += gameSpeed * 1.2f - gameSpeed;
+                x += (Math.random() - 0.5f) * 8f;
+                // Clamp to screen bounds
+                x = Math.max(0, Math.min(x, screenWidth - width));
                 break;
             case "Memory":
-                y += speedY * 0.8f; // slower fall
-                // Optional: float side to side softly
-                x += (float) Math.sin(y / 30) * 4;
+                y += gameSpeed * 0.6f - gameSpeed;
+                x += (float) Math.sin(y / 30.0f + swayPhase) * swayAmplitude;
+                // Clamp to screen bounds
+                x = Math.max(0, Math.min(x, screenWidth - width));
                 break;
-            default:
-                y += speedY;
         }
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawRect(x, y, x + width, y + height, paint);
+        if (active) {
+            canvas.drawRect(x, y, x + width, y + height, paint);
+        }
     }
 
     public boolean isOffScreen(int screenHeight) {
         return y > screenHeight;
     }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+        this.active = true;
+    }
+
+    public boolean isOffScreen(float screenHeight) {
+        return y > screenHeight;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+        setStyleByType();
+    }
+
+    public void setScreenDimensions(float screenWidth, float screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
+    public int getColor() {
+        return paint.getColor();
+    }
+
+    // Getters
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getWidth() { return width; }
+    public float getHeight() { return height; }
+    public String getType() { return type; }
+    public boolean isActive() { return active; }
 }

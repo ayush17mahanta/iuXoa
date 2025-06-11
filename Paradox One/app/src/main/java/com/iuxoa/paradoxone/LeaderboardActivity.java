@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LeaderboardActivity extends Activity {
 
-    private MemoryManager memoryManager;
+    private ProfileManager profileManager;
     private ListView listView;
 
     @Override
@@ -18,11 +18,11 @@ public class LeaderboardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        memoryManager = new MemoryManager(this);
+        profileManager = new ProfileManager(this);
         listView = findViewById(R.id.leaderboard_list);
 
-        List<Integer> scores = memoryManager.loadScores();
-        Collections.sort(scores, Collections.reverseOrder()); // Sort descending
+        List<Integer> scores = profileManager.getAllScores();
+        Collections.sort(scores, Collections.reverseOrder()); // Sort descending (though ProfileManager already does this)
 
         ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, scores);
