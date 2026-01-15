@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradox One - Policies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Starfield Background */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: var(--opacity); transform: scale(1); }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            transform-style: preserve-3d;
+            animation: floatIn 2s ease-out;
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateZ(-500px) rotateX(30deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateZ(0) rotateX(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #00ff88);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 3s ease infinite;
+            text-shadow: 0 0 60px rgba(0, 245, 255, 0.5);
+            margin-bottom: 1rem;
+            transform: translateZ(100px);
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #00f5ff;
+            transform: translateZ(50px);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 245, 255, 0.3), rgba(255, 0, 255, 0.1));
+            filter: blur(60px);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .orb3 {
+            width: 500px;
+            height: 500px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -50px) rotate(120deg); }
+            66% { transform: translate(-30px, 30px) rotate(240deg); }
+        }
+
+        /* Policy Sections */
+        .policy-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 40px;
+            opacity: 0;
+            transform: translateY(100px) rotateX(10deg);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .policy-section.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+
+        .policy-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 60px;
+            margin-bottom: 60px;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .policy-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 245, 255, 0.1), transparent 30%);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .policy-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .policy-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            border-color: rgba(0, 245, 255, 0.5);
+            box-shadow: 0 30px 80px rgba(0, 245, 255, 0.3);
+        }
+
+        .policy-card h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .policy-card h3 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #00ff88;
+            position: relative;
+            z-index: 1;
+        }
+
+        .policy-card p, .policy-card li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .policy-card ul {
+            list-style: none;
+            padding-left: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .policy-card li {
+            padding-left: 40px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .policy-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #00f5ff;
+            font-size: 1.5rem;
+            animation: slideRight 1.5s ease-in-out infinite;
+        }
+
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* 3D Floating Elements */
+        .floating-3d {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            font-size: 120px;
+            transform-style: preserve-3d;
+            animation: rotateSwirl 15s linear infinite, floatAround 20s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 245, 255, 0.6));
+        }
+
+        @keyframes rotateSwirl {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.2); }
+            50% { transform: translate(-30px, 40px) scale(0.9); }
+            75% { transform: translate(40px, 30px) scale(1.1); }
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #00f5ff, #ff00ff, #00ff88);
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 245, 255, 0.2);
+        }
+
+        footer p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { 
+                font-size: 3rem; 
+                text-shadow: 0 0 40px rgba(0, 245, 255, 0.5);
+            }
+            .hero p { font-size: 1rem; }
+            
+            .policy-card { 
+                padding: 30px 20px; 
+                border-radius: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .policy-card h2 { 
+                font-size: 2rem; 
+                margin-bottom: 20px;
+            }
+            
+            .policy-card h3 { 
+                font-size: 1.5rem; 
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+            
+            .policy-card p, .policy-card li { 
+                font-size: 1rem; 
+                line-height: 1.6;
+            }
+            
+            .policy-section {
+                padding: 60px 20px;
+            }
+            
+            /* Reduce orb sizes on mobile */
+            .orb1 { width: 250px; height: 250px; }
+            .orb2 { width: 200px; height: 200px; }
+            .orb3 { width: 300px; height: 300px; }
+            
+            /* Smaller swirls on mobile */
+            .floating-3d {
+                font-size: 60px;
+            }
+            
+            footer {
+                padding: 40px 20px;
+            }
+            
+            footer p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { 
+                font-size: 2.5rem; 
+            }
+            
+            .hero p { 
+                font-size: 0.9rem; 
+            }
+            
+            .policy-card { 
+                padding: 25px 15px; 
+            }
+            
+            .policy-card h2 { 
+                font-size: 1.8rem; 
+            }
+            
+            .policy-card h3 { 
+                font-size: 1.3rem; 
+            }
+            
+            .policy-card li {
+                padding-left: 30px;
+            }
+            
+            .policy-card li::before {
+                font-size: 1.2rem;
+            }
+            
+            /* Even smaller swirls on small phones */
+            .floating-3d {
+                font-size: 40px;
+            }
+            
+            /* Disable 3D tilt on mobile for performance */
+            .policy-card:hover {
+                transform: translateY(-10px) scale(1.01);
+            }
+        }
+
+        /* Reduce animations on mobile for better performance */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Starfield -->
+    <div id="starfield"></div>
+
+    <!-- Floating Orbs -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- 3D Floating Swirls -->
+    <div class="floating-3d" style="top: 15%; left: 8%;">🌀</div>
+    <div class="floating-3d" style="top: 50%; right: 5%; animation-delay: 3s;">🌀</div>
+    <div class="floating-3d" style="bottom: 20%; left: 15%; animation-delay: 6s;">🌀</div>
+    <div class="floating-3d" style="top: 70%; right: 20%; animation-delay: 9s;">🌀</div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PARADOX ONE</h1>
+            <p>Our Policies & Guidelines</p>
+        </div>
+    </section>
+
+    <!-- Privacy Policy -->
+    <section class="policy-section">
+        <div class="policy-card">
+            <h2>Privacy Policy</h2>
+            <p><strong>Last Updated:</strong> January 2026</p>
+            
+            <h3>Information We Collect</h3>
+            <ul>
+                <li>Personal identification information (Name, email address, phone number)</li>
+                <li>Usage data and analytics</li>
+                <li>Cookies and tracking technologies</li>
+                <li>Device and browser information</li>
+            </ul>
+
+            <h3>How We Use Your Information</h3>
+            <ul>
+                <li>To provide and maintain our services</li>
+                <li>To improve user experience and personalization</li>
+                <li>To communicate important updates and notifications</li>
+                <li>To analyze usage patterns and optimize performance</li>
+            </ul>
+
+            <h3>Data Security</h3>
+            <p>We implement industry-standard security measures to protect your personal information. All data is encrypted both in transit and at rest using advanced encryption protocols.</p>
+
+            <h3>Your Rights</h3>
+            <ul>
+                <li>Right to access your personal data</li>
+                <li>Right to rectification and deletion</li>
+                <li>Right to data portability</li>
+                <li>Right to withdraw consent at any time</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Terms of Service -->
+    <section class="policy-section">
+        <div class="policy-card">
+            <h2>Terms of Service</h2>
+            
+            <h3>Acceptance of Terms</h3>
+            <p>By accessing and using Paradox One services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+
+            <h3>User Responsibilities</h3>
+            <ul>
+                <li>Maintain the confidentiality of your account credentials</li>
+                <li>Use services in compliance with applicable laws and regulations</li>
+                <li>Respect intellectual property rights</li>
+                <li>Refrain from malicious or harmful activities</li>
+            </ul>
+
+            <h3>Service Modifications</h3>
+            <p>We reserve the right to modify, suspend, or discontinue any part of our services at any time. We will provide reasonable notice of significant changes.</p>
+
+            <h3>Limitation of Liability</h3>
+            <p>Paradox One shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services.</p>
+        </div>
+    </section>
+
+    <!-- Cookie Policy -->
+    <section class="policy-section">
+        <div class="policy-card">
+            <h2>Cookie Policy</h2>
+            
+            <h3>What Are Cookies?</h3>
+            <p>Cookies are small text files stored on your device that help us provide a better user experience and analyze how our services are used.</p>
+
+            <h3>Types of Cookies We Use</h3>
+            <ul>
+                <li><strong>Essential Cookies:</strong> Necessary for the operation of our website</li>
+                <li><strong>Analytics Cookies:</strong> Help us understand user behavior and improve services</li>
+                <li><strong>Functional Cookies:</strong> Remember your preferences and settings</li>
+                <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements</li>
+            </ul>
+
+            <h3>Managing Cookies</h3>
+            <p>You can control and manage cookies through your browser settings. Note that disabling certain cookies may limit functionality.</p>
+        </div>
+    </section>
+
+    <!-- Data Protection -->
+    <section class="policy-section">
+        <div class="policy-card">
+            <h2>Data Protection</h2>
+            
+            <h3>Our Commitment</h3>
+            <p>Paradox One is committed to protecting your data and maintaining transparency in our data handling practices.</p>
+
+            <h3>International Data Transfers</h3>
+            <p>Your data may be transferred to and processed in countries outside your residence. We ensure appropriate safeguards are in place for such transfers.</p>
+
+            <h3>Data Retention</h3>
+            <p>We retain personal data only for as long as necessary to fulfill the purposes outlined in our Privacy Policy or as required by law.</p>
+
+            <h3>Contact Us</h3>
+            <p>For any questions regarding our policies or data practices, please contact us at privacy@paradoxone.com</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Paradox One. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Create Starfield
+        const starfield = document.getElementById('starfield');
+        const numStars = 150;
+
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            star.style.setProperty('--opacity', Math.random() * 0.5 + 0.3);
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starfield.appendChild(star);
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.policy-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / scrollHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
+        // 3D Card Tilt Effect
+        document.querySelectorAll('.policy-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-20px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // Parallax Effect for Orbs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            document.querySelectorAll('.orb').forEach((orb, index) => {
+                const speed = (index + 1) * 0.2;
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
