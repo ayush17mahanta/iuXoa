@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useState, useEffect } from 'react';
+import appLogo from './image/app_logo.png';
 
 export function Navigation() {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,7 +38,13 @@ export function Navigation() {
           }}
         >
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
+          <a href="#" className="flex items-center gap-3">
+            <img 
+              src={appLogo} 
+              alt="Paradox One Logo" 
+              className="w-10 h-10 object-contain"
+              draggable="false"
+            />
             <span 
               className="text-xl"
               style={{ 

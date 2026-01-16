@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Paradox One</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%);
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 40px 20px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 20px;
+      padding: 60px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00f0ff 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00f0ff;
+      font-size: 1.5rem;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #b0b0b0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #00f0ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      color: #a855f7;
+      transform: translateX(-5px);
+    }
+
+    .updated {
+      color: #888;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 40px;
+      font-style: italic;
+    }
+
+    ul {
+      margin-left: 30px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      color: #b0b0b0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <h1>Privacy Policy</h1>
+    
+    <h2>1. Introduction</h2>
+    <p>
+      Welcome to Paradox One. This Privacy Policy explains how iuXoa ("we," "our," or "us") collects, uses, 
+      and protects your information when you use our game and services.
+    </p>
+
+    <h2>2. Information We Collect</h2>
+    <p>We may collect the following types of information:</p>
+    <ul>
+      <li>Device information (device type, operating system, unique identifiers)</li>
+      <li>Gameplay data (scores, progress, achievements)</li>
+      <li>Usage statistics and analytics</li>
+      <li>Crash reports and performance data</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <p>We use the collected information to:</p>
+    <ul>
+      <li>Provide and improve our game services</li>
+      <li>Analyze game performance and user experience</li>
+      <li>Fix bugs and technical issues</li>
+      <li>Communicate updates and important information</li>
+    </ul>
+
+    <h2>4. Data Security</h2>
+    <p>
+      We implement appropriate security measures to protect your information from unauthorized access, 
+      alteration, or disclosure. However, no method of transmission over the internet is 100% secure.
+    </p>
+
+    <h2>5. Third-Party Services</h2>
+    <p>
+      Our game may use third-party services for analytics and functionality. These services have their own 
+      privacy policies and we encourage you to review them.
+    </p>
+
+    <h2>6. Children's Privacy</h2>
+    <p>
+      Our game is not intended for children under 13. We do not knowingly collect personal information 
+      from children under 13. If you believe we have collected such information, please contact us.
+    </p>
+
+    <h2>7. Changes to This Policy</h2>
+    <p>
+      We may update this Privacy Policy from time to time. We will notify you of any changes by posting 
+      the new Privacy Policy on this page and updating the "Last Updated" date.
+    </p>
+
+    <h2>8. Contact Us</h2>
+    <p>
+      If you have any questions about this Privacy Policy, please contact us at:
+      <br><br>
+      Email: privacy@iuxoa.com
+    </p>
+
+    <p class="updated">Last Updated: January 2026</p>
+  </div>
+
+  <script>
+    // Disable right-click
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // Disable keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C
+      if (e.keyCode === 123 || 
+          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) ||
+          (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Disable text selection
+    document.onselectstart = function() {
+      return false;
+    };
+  </script>
+</body>
+</html>

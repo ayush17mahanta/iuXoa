@@ -56,7 +56,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a href="/privacy-policy.html" className="hover:text-cyan-400 transition-colors">
                   Privacy Policy
                 </a>
               </li>
