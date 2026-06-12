@@ -1,0 +1,4 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Night theme: identical to day (app is always dark — matches portfolio website) -->
+    <style name="Theme.Iu" parent="Base.Theme.Iu" />
+</resources>

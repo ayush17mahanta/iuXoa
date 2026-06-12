@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand core — exact match to portfolio website -->
+    <color name="iu_background">#FF000000</color>
+    <color name="iu_surface">#FF0A0A0A</color>
+    <color name="iu_surface2">#FF111111</color>
+    <color name="iu_surface3">#FF0D0D0D</color>
+    <color name="iu_orange">#FFE85533</color>
+    <color name="iu_white">#FFE8E6E0</color>
+
+    <!-- Text hierarchy -->
+    <color name="iu_text">#FFE8E6E0</color>
+    <color name="iu_text_muted">#66FFFFFF</color>
+    <color name="iu_text_faint">#33FFFFFF</color>
+    <color name="iu_text_dim">#1AFFFFFF</color>
+
+    <!-- Borders -->
+    <color name="iu_border">#12FFFFFF</color>
+    <color name="iu_border_mid">#1FFFFFFF</color>
+    <color name="iu_border_strong">#30FFFFFF</color>
+
+    <!-- Accent palette — matches website CAT_COLORS / card colors -->
+    <color name="iu_pink">#FFD92B6B</color>
+    <color name="iu_blue">#FF2B7FD9</color>
+    <color name="iu_purple">#FFA02BD9</color>
+    <color name="iu_gold">#FFD9A02B</color>
+    <color name="iu_teal">#FF2BD97F</color>
+
+    <!-- Shimmer gradient -->
+    <color name="iu_shimmer_base">#FF0A0A0A</color>
+    <color name="iu_shimmer_highlight">#FF1A1A1A</color>
+
+    <!-- System -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="status_bar_color">#FF000000</color>
+</resources>

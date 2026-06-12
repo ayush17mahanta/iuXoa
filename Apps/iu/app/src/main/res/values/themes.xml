@@ -1,0 +1,65 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.Iu" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Primary = brand orange #e85533 -->
+        <item name="colorPrimary">@color/iu_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/iu_surface2</item>
+        <item name="colorOnPrimaryContainer">@color/iu_orange</item>
+
+        <!-- Secondary = warm off-white -->
+        <item name="colorSecondary">@color/iu_white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryContainer">@color/iu_surface2</item>
+        <item name="colorOnSecondaryContainer">@color/iu_white</item>
+
+        <!-- Tertiary = pink -->
+        <item name="colorTertiary">@color/iu_pink</item>
+        <item name="colorOnTertiary">@color/white</item>
+
+        <!-- Surface tokens -->
+        <item name="colorSurface">@color/iu_surface</item>
+        <item name="colorOnSurface">@color/iu_white</item>
+        <item name="colorSurfaceVariant">@color/iu_surface2</item>
+        <item name="colorOnSurfaceVariant">@color/iu_text_muted</item>
+
+        <!-- Outline -->
+        <item name="colorOutline">@color/iu_border</item>
+        <item name="colorOutlineVariant">@color/iu_border_mid</item>
+
+        <!-- Error -->
+        <item name="colorError">@color/iu_pink</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Ripple -->
+        <item name="android:colorControlHighlight">#10FFFFFF</item>
+
+        <!-- System bars -->
+        <item name="android:navigationBarColor">@color/iu_surface</item>
+        <item name="android:statusBarColor">@color/iu_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+
+        <!-- Edge-to-edge -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+
+        <!-- No title bar -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Theme.Iu" parent="Base.Theme.Iu" />
+
+    <style name="Theme.Iu.Splash" parent="Theme.Iu">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
+
+</resources>
